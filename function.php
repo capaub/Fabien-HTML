@@ -17,12 +17,12 @@ function sendMail(string $sMail, string $sSubject, string $sContent):bool
 }
 
 /**
- * @param array $aArticle
+ * @param object $aArticle
  * @return void
  */
-function saveArticle(array $aArticle)
+function saveArticle(object $oArticle)
 {
-    file_put_contents(SAVE_DIR.DIRECTORY_SEPARATOR.uniqid().'.json', json_encode($aArticle));
+    file_put_contents(SAVE_DIR.DIRECTORY_SEPARATOR.uniqid("art_",false).'.article', serialize($oArticle));
 }
 
 /**
@@ -30,13 +30,9 @@ function saveArticle(array $aArticle)
  */
 function loadArticles():void
 {
-    /*
-$aFilename=glob(SAVE_DIR.DIRECTORY_SEPARATOR.'*.json');
-foreach ($aFilename as $files) {
-    arrayjson_decode(file_get_contents($files), true);
-    echo
-        $files[subject] . "</br></br>" .
-        $files[content] . "</br></br>" .
-        $files[type] . "</br></br>";
-}*/
+    $aFilenames=glob(SAVE_DIR.DIRECTORY_SEPARATOR.'*.article');
+    foreach ($aFilenames as $file)
+    {
+        $article = unserialize(file_get_contents($file):mixed);
+    }
 }

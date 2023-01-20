@@ -1,13 +1,21 @@
 header, footer{
     text-align: center;
 }
+
 .active{
     font-weight: bold;
 }
+
 label{
     display: block;
 }
+
 form{
     min-width: 40%;
     max-width: 80%;
 }
+
+hr{
+    max-width: 50%;
+}
+
