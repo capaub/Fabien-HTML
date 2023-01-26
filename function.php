@@ -17,22 +17,57 @@ function sendMail(string $sMail, string $sSubject, string $sContent):bool
 }
 
 /**
- * @param object $aArticle
+ * @param Article $aArticle
  * @return void
  */
-function saveArticle(object $oArticle)
+function saveArticle(Article $oArticle)
 {
     file_put_contents(SAVE_DIR.DIRECTORY_SEPARATOR.uniqid("art_",false).'.article', serialize($oArticle));
 }
 
 /**
- * @return void
+ * @return array
  */
-function loadArticles():void
+
+function loadArticles():array
 {
+    $aArticles = [];
     $aFilenames=glob(SAVE_DIR.DIRECTORY_SEPARATOR.'*.article');
     foreach ($aFilenames as $file)
     {
-        $article = unserialize(file_get_contents($file):mixed);
+        $aArticles[] = unserialize(file_get_contents($file), ['allowed_classes' => true]);
     }
+    return $aArticles;
+}
+
+/**
+ * @param User $oUser
+ * @return void
+ */
+function saveUser(User $oUser)
+{
+    file_put_contents(SAVE_DIR.DIRECTORY_SEPARATOR.$oUser->getUserName().'.user', serialize($oUser));
+}
+
+/**
+ * @return array
+ */
+function loadUser():array
+{
+    $aUsers = [];
+    $aFilenames=glob(SAVE_DIR.DIRECTORY_SEPARATOR.'*.user');
+    foreach ($aFilenames as $file)
+    {
+        $aUsers[] = unserialize(file_get_contents($file), ['allowed_classes' => true]);
+    }
+    return $aUsers;
+}
+
+/**
+ * @param string $sUsername
+ * @return bool
+ */
+function isUserExist(string $sUsername):bool
+{
+    return file_exists(SAVE_DIR.DIRECTORY_SEPARATOR.$sUsername.'.user');
 }

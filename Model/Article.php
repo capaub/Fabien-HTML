@@ -2,8 +2,6 @@
 
 require 'Category.php';
 
-
-
 class Article
 {
     /** @var int  */
@@ -43,7 +41,7 @@ class Article
         $this->category = $oCategory;
 
         $this->status = $iStatus;
-        $this->createdAt = new DateTime();
+        $this->createdAt = new DateTime('now');
     }
 
     /**
@@ -67,6 +65,7 @@ class Article
     /**
      * @return string
      */
+
     public function getContent(): string
     {
         return $this->content;
@@ -135,6 +134,4 @@ class Article
         $this->createdAt = $createdAt;
         return $this;
     }
-
-
 }

@@ -4,6 +4,7 @@ require_once 'lib/config.php';
 require_once 'function.php';
 require_once 'Model/Article.php';
 require_once 'Model/Category.php';
+require_once 'Model/User.php';
 
 $oCat1 = new Category("Auto/Moto");
 $oCat2 = new Category("Higth-Tech");
@@ -47,6 +48,21 @@ $oCat3 = new Category("Santé");
         sendMail(MAIL_ADMIN, $_POST["field_contact_subject"], $_POST["field_contact_content"]);
     }*/
 
+    if(isset($_POST["field_article_username"],$_POST["field_article_email"],$_POST["field_article_birthdate"],$_POST["field_article_password"]))
+    {
+        $sUsername = strip_tags($_POST["field_article_username"]);
+        $sEmail = strip_tags($_POST["field_article_email"]);
+        $dBirthDate = strip_tags($_POST["field_article_birthdate"]);
+        $sPassword = strip_tags($_POST["field_article_password"]);
+
+        if(isUserExist($sUsername))
+        {
+            $oUser = new User($sUsername, $sEmail,new DateTime($dBirthDate),$sPassword);
+            saveUser($oUser);
+        }
+
+    }
+
     if(isset($_POST["field_article_subject"],$_POST["field_article_content"],$_POST["field_article_type"])) {
 
         foreach($aCats as $oCat)
@@ -58,7 +74,6 @@ $oCat3 = new Category("Santé");
                 break;
             }
         }
-
     }
 
 

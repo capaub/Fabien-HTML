@@ -1,5 +1,5 @@
 <main>
-    <form action="?page=<?php echo TITLE_ARTICLES; ?>" method="POST" class="form_article">
+    <form action="?page=<?php echo PAGE_ARTICLES; ?>" method="POST" class="form_article">
         <fieldset>
             <legend>Nouvel article</legend>
             <div>

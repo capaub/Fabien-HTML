@@ -2,7 +2,6 @@
 
 class Category
 {
-
     /** @var string  */
     public string $name;
 
@@ -31,6 +30,4 @@ class Category
         $this->name = $name;
         return $this;
     }
-
-
 }
