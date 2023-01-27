@@ -1,3 +1,9 @@
+<?php
+
+use Blog\Model\User;
+
+?>
+
 <header>
     <nav>
         <a class="" href="?page=<?php echo PAGE_HOME; ?>&title=<?php echo TITLE_HOME; ?>">Accueil</a>
@@ -8,8 +14,15 @@
         |
         <a class="" href="?page=<?php echo PAGE_ADMIN; ?>&title=<?php echo TITLE_ADMIN; ?>">Admin</a>
         |
-        <a class="" href="?page=<?php echo PAGE_USER; ?>&title=<?php echo TITLE_USER; ?>">Inscription</a>
-        |
-        <a class="" href="?page=<?php echo PAGE_LOGIN; ?>&title=<?php echo TITLE_LOGIN; ?>">Login</a>
+        <?php if (isset($_SESSION['user']) && $_SESSION['user'] instanceof User) { ?>
+            <a class="" href="?page=<?php echo PAGE_USER; ?>&title=<?php echo TITLE_USER; ?>">Mon Compte</a>
+            |
+            <a class="" href="?page=<?php echo PAGE_LOGIN; ?>&title=<?php echo TITLE_LOGIN; ?>">Déconnexion</a>
+
+        <?php } else { ?>
+            <a class="" href="?page=<?php echo PAGE_USER; ?>&title=<?php echo TITLE_USER; ?>">Inscription</a>
+            |
+            <a class="" href="?page=<?php echo PAGE_LOGIN; ?>&title=<?php echo TITLE_LOGIN; ?>">Login</a>
+        <?php } ?>
     </nav>
 </header>
