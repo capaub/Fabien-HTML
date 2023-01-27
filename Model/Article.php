@@ -1,31 +1,36 @@
 <?php
 
+namespace Blog\Model;
+
+use Blob\Model\Category;
+use DateTime;
+
 require 'Category.php';
 
 class Article
 {
-    /** @var int  */
+    /** @var int */
     public const STATUS_PUBLISHED = 1;
-    /** @var int  */
+    /** @var int */
     public const STATUS_DRAFTED = 2;
-    /** @var int  */
+    /** @var int */
     public const STATUS_DELETED = 3;
 
     public const STATUS = [
-        self::STATUS_PUBLISHED=>'Publié',
-        self::STATUS_DRAFTED=>'Brouillon',
-        self::STATUS_DELETED=>'Spprimé',
+        self::STATUS_PUBLISHED => 'Publié',
+        self::STATUS_DRAFTED => 'Brouillon',
+        self::STATUS_DELETED => 'Spprimé',
     ];
 
-    /** @var string  */
+    /** @var string */
     private string $title;
-    /** @var string  */
+    /** @var string */
     private string $content;
-    /** @var int  */
+    /** @var int */
     private int $status;
-    /** @var Category  */
+    /** @var Category */
     private Category $category;
-    /** @var DateTime  */
+    /** @var DateTime */
     private DateTime $createdAt;
 
     /**

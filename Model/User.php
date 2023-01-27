@@ -1,28 +1,33 @@
 <?php
 
+namespace Blog\Model;
+
+use Blog\Model\Address;
+use DateTime;
+
 class User
 {
-    /** @var string  */
+    /** @var string */
     private string $userName;
-    /** @var string  */
+    /** @var string */
     private string $email;
-    /** @var string  */
+    /** @var string */
     private string $firstName;
-    /** @var string  */
+    /** @var string */
     private string $lastName;
-    /** @var string  */
-    private string $address;
-    /** @var string  */
+    /** @var Address */
+    private Address $address;
+    /** @var string */
     private string $password;
-    /** @var int  */
+    /** @var int */
     private int $role;
-    /** @var DateTime  */
+    /** @var DateTime */
     private DateTime $birthAt;
-    /** @var DateTime  */
+    /** @var DateTime */
     private DateTime $createdAt;
-    /** @var DateTime  */
+    /** @var DateTime */
     private DateTime $updatedAt;
-    /** @var DateTime  */
+    /** @var DateTime */
     private DateTime $lastConnectionAt;
 
     public const ROLE_ADMIN = 1;
@@ -31,9 +36,9 @@ class User
 
     public const ROLE_CONF =
         [
-            self::ROLE_ADMIN=>['name'=>'Admin'],
-            self::ROLE_MANAGER=>['name'=>'Manager'],
-            self::ROLE_USER=>['name'=>'User'],
+            self::ROLE_ADMIN => ['name' => 'Admin'],
+            self::ROLE_MANAGER => ['name' => 'Manager'],
+            self::ROLE_USER => ['name' => 'User'],
         ];
 
     /**
@@ -41,13 +46,15 @@ class User
      * @param string $sEmail
      * @param DateTime $dBirthAt
      * @param string $sPassword
+     * @param Address $oAddress
      */
-    public function __construct(string $userName, string $sEmail, DateTime $dBirthAt, string $sPassword)
+    public function __construct(string $userName, string $sEmail, DateTime $dBirthAt, string $sPassword, Address $oAddress)
     {
         $this->userName = $userName;
         $this->email = $sEmail;
         $this->birthAt = $dBirthAt;
         $this->password = $sPassword;
+        $this->address = $oAddress;
         $this->createdAt = new DateTime('now');
         $this->role = self::ROLE_USER;
     }
@@ -125,18 +132,18 @@ class User
     }
 
     /**
-     * @return string
+     * @return Address
      */
-    public function getAddress(): string
+    public function getAddress(): Address
     {
         return $this->address;
     }
 
     /**
-     * @param string $address
+     * @param Address $address
      * @return User
      */
-    public function setAddress(string $address): User
+    public function setAddress(Address $address): User
     {
         $this->address = $address;
         return $this;

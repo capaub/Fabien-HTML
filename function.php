@@ -1,73 +1,44 @@
 <?php
 
+use Blog\Model\User;
+use Blog\Repository\UserRepository;
+
 /**
  * @param string $sMail
  * @param string $sSubject
  * @param string $sContent
  * @return bool
  */
-function sendMail(string $sMail, string $sSubject, string $sContent):bool
+function sendMail(string $sMail, string $sSubject, string $sContent): bool
 {
     echo
-    'Votre email à bien été envoyer à '.$sMail."</br></br>".
-    'Subject :'.$sSubject."</br></br>".
-    'Content :'.$sContent."</br></br>";
+        'Votre email à bien été envoyer à ' . $sMail . "</br></br>" .
+        'Subject :' . $sSubject . "</br></br>" .
+        'Content :' . $sContent . "</br></br>";
 
     return true;
 }
 
-/**
- * @param Article $aArticle
- * @return void
- */
-function saveArticle(Article $oArticle)
-{
-    file_put_contents(SAVE_DIR.DIRECTORY_SEPARATOR.uniqid("art_",false).'.article', serialize($oArticle));
-}
 
 /**
- * @return array
+ * @param $sPassword
+ * @return string
  */
-
-function loadArticles():array
+function hashPassword($sPassword): string
 {
-    $aArticles = [];
-    $aFilenames=glob(SAVE_DIR.DIRECTORY_SEPARATOR.'*.article');
-    foreach ($aFilenames as $file)
-    {
-        $aArticles[] = unserialize(file_get_contents($file), ['allowed_classes' => true]);
-    }
-    return $aArticles;
-}
-
-/**
- * @param User $oUser
- * @return void
- */
-function saveUser(User $oUser)
-{
-    file_put_contents(SAVE_DIR.DIRECTORY_SEPARATOR.$oUser->getUserName().'.user', serialize($oUser));
-}
-
-/**
- * @return array
- */
-function loadUser():array
-{
-    $aUsers = [];
-    $aFilenames=glob(SAVE_DIR.DIRECTORY_SEPARATOR.'*.user');
-    foreach ($aFilenames as $file)
-    {
-        $aUsers[] = unserialize(file_get_contents($file), ['allowed_classes' => true]);
-    }
-    return $aUsers;
+    return password_hash($sPassword, PASSWORD_BCRYPT);
 }
 
 /**
  * @param string $sUsername
- * @return bool
+ * @param string $sPassword
+ * @return User|null
  */
-function isUserExist(string $sUsername):bool
+function authUser(string $sUsername, string $sPassword): ?User
 {
-    return file_exists(SAVE_DIR.DIRECTORY_SEPARATOR.$sUsername.'.user');
+    $oUser = UserRepository::find($sUsername);
+    if ($oUser && password_verify($sPassword, $oUser->getPassword())) {
+        return $oUser;
+    }
+    return null;
 }

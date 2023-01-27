@@ -1,20 +1,41 @@
 <?php
 
+spl_autoload_register(function (string $sClass) {
+    $sFilepath = str_replace(['\\', 'Blog/'], ['/', ''], $sClass) . '.php';
+    if (file_exists($sFilepath)) {
+        require_once $sFilepath;
+    }
+});
+
+session_start();
+
+use Blog\Model\Article;
+use Blog\Model\User;
+use Blog\Model\Address;
+use Blog\Repository\ArticleRepository;
+use Blog\Repository\CategoryRepository;
+use Blog\Repository\UserRepository;
+
 require_once 'lib/config.php';
 require_once 'function.php';
-require_once 'Model/Article.php';
-require_once 'Model/Category.php';
-require_once 'Model/User.php';
+//require_once 'Model/Article.php';
+//require_once 'Model/Category.php';
+//require_once 'Model/User.php';
+//require_once 'Repository/UserRepository.php';
+//require_once 'Repository/ArticleRepository.php';
+//require_once 'Repository/CategoryRepository.php';
 
-$oCat1 = new Category("Auto/Moto");
-$oCat2 = new Category("Higth-Tech");
-$oCat3 = new Category("Santé");
+$aFlashMessages = [];
 
- $aCats=[
-    $oCat1,
-    $oCat2,
-    $oCat3,
-];
+//$aCategory = CategoryRepository::findAll();
+
+print_r($aFlashMessages);
+
+//UserRepository::isExist($sUsername);
+//UserRepository::find($sUsername);
+//UserRepository::findAll();
+//UserRepository::save($oUser);
+
 
 //echo '<pre>';
 // print_r($_SESSION);  // Utiliser les info des sessions utilisateur
@@ -30,63 +51,88 @@ $oCat3 = new Category("Santé");
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo $sTitle=$_GET['title']??TITLE_HOME; ?>- Mon site</title>
+    <title><?php echo $sTitle = $_GET['title'] ?? TITLE_HOME; ?>- Mon site</title>
     <meta name="description" content="super blog">
-    <link rel="stylesheet" href="css/style.scss">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <?php include 'views/header.php';
+<?php include 'views/header.php';
 
-    /*
-    if(isset($_POST["field_contact_subject"],$_POST["field_contact_content"])) {
-        $sCleanCategory = filter_input(INPUT_POST,'field_subject',FILTER_SANITIZE_STRING);
-        $sCleanSubject = filter_var($_POST['field_subject'],FILTER_SANITIZE_STRING);
-        $sCleanContent = filter_var($_POST['field_content'],FILTER_SANITIZE_STRING);
+if (isset($_POST["field_login_username"], $_POST["field_login_password"])) {
+    $sUsername = strip_tags($_POST["field_login_username"]);
+    $sPassword = strip_tags($_POST["field_login_password"]);
 
+    $oUser = authUser($sUsername, $sPassword);
+    if ($oUser instanceof User) {
+        $_SESSION['user'] = $oUser;
+        echo 'authentificiation réussit';
+        $aFlashMessages[] = ['SUCCESS' => 'logged'];
+    }
 
-        sendMail(MAIL_ADMIN, $_POST["field_contact_subject"], $_POST["field_contact_content"]);
-    }*/
+    $aFlashMessages[] = ['ERREUR' => 'MdP ou Username invalide'];
+}
 
-    if(isset($_POST["field_article_username"],$_POST["field_article_email"],$_POST["field_article_birthdate"],$_POST["field_article_password"]))
-    {
-        $sUsername = strip_tags($_POST["field_article_username"]);
-        $sEmail = strip_tags($_POST["field_article_email"]);
-        $dBirthDate = strip_tags($_POST["field_article_birthdate"]);
-        $sPassword = strip_tags($_POST["field_article_password"]);
+if (isset(
+    $_POST["field_username"],
+    $_POST["field_email"],
+    $_POST["field_birthdate"],
+    $_POST["field_password"],
+    $_POST["field_street"],
+    $_POST["field_postalCode"],
+    $_POST["field_city"],
+    $_POST["field_country"],
+)) {
+    $sUsername = strip_tags($_POST["field_username"]);
+    $sEmail = strip_tags($_POST["field_email"]);
+    $dBirthDate = strip_tags($_POST["field_birthdate"]);
+    $sPassword = strip_tags($_POST["field_password"]);
+    $sStreet = strip_tags($_POST["field_street"]);
+    $sPostalCode = strip_tags($_POST["field_postalCode"]);
+    $sCity = strip_tags($_POST["field_city"]);
+    $sCountry = strip_tags($_POST["field_country"]);
 
-        if(isUserExist($sUsername))
-        {
-            $oUser = new User($sUsername, $sEmail,new DateTime($dBirthDate),$sPassword);
-            saveUser($oUser);
+    $oAddress = new Address(
+        $sStreet,
+        $sPostalCode,
+        $sCity,
+        $sCountry,
+    );
+
+    if (!UserRepository::isExist($sUsername)) {
+        $oUser = new User($sUsername, $sEmail, new DateTime($dBirthDate), hashPassword($sPassword), $oAddress);
+        UserRepository::save($oUser);
+        $aFlashMessages[] = ['SUCCESS' => 'utilisateur enregistré'];
+        header('Location: index.php?page=home');
+        exit;
+    }
+
+    $aFlashMessages[] = ['ERREUR' => 'utilisateur existant'];
+}
+
+if (isset($_POST["field_article_subject"], $_POST["field_article_content"], $_POST["field_article_type"])) {
+
+    foreach ($aCats as $oCat) {
+        if ($_POST["field_article_type"] === $oCat->getName()) {
+            $oArticle = new Article($_POST["field_article_subject"], $_POST["field_article_content"], $oCat);
+            ArticleRepository::save($oArticle);
+            break;
         }
-
     }
-
-    if(isset($_POST["field_article_subject"],$_POST["field_article_content"],$_POST["field_article_type"])) {
-
-        foreach($aCats as $oCat)
-        {
-            if($_POST["field_article_type"] == $oCat->getName())
-            {
-                $oArticle = new Article($_POST["field_article_subject"], $_POST["field_article_content"], $oCat);
-                saveArticle($oArticle);
-                break;
-            }
-        }
-    }
+}
 
 
+print_r($aFlashMessages);
 
-    $sPage=$_GET['page']??PAGE_HOME;
-    $sFilename='views/'.$sPage.'.php';
-    if(!file_exists($sFilename)){
-        $sFilename='views/home.php';
-    }
-    include $sFilename;
+$sPage = $_GET['page'] ?? PAGE_HOME;
+$sFilename = 'views/' . $sPage . '.php';
+if (!file_exists($sFilename)) {
+    $sFilename = 'views/home.php';
+}
+include $sFilename;
 
-    include 'views/footer.php';
-    ?>
+include 'views/footer.php';
+?>
 <script src="js/script.js"></script>
 </body>
 </html>

@@ -1,24 +1,25 @@
 <?php
 
+namespace Blog\Model;
+
 class Address
 {
-    /** @var string  */
+    /** @var string */
     private string $street;
-    /** @var int  */
+    /** @var int */
     private int $postalCode;
-    /** @var string  */
+    /** @var string */
     private string $city;
-    /** @var string  */
+    /** @var string */
     private string $country;
 
     /**
      * @param string $sStreet
-     * @param int $iPostalCode
+     * @param string $iPostalCode
      * @param string $sCity
      * @param string $sCountry
-     * @return void
      */
-    public function __construct(string $sStreet, int $iPostalCode, string $sCity, string $sCountry)
+    public function __construct(string $sStreet, string $iPostalCode, string $sCity, string $sCountry)
     {
         $this->street = $sStreet;
         $this->postalCode = $iPostalCode;
