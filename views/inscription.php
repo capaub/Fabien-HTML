@@ -1,5 +1,5 @@
 <main>
-    <form action="?page=<?php echo PAGE_USER; ?>" method="POST" class="form_user">
+    <form action="?page=<?php echo PAGE_SIGNUP; ?>" method="POST" class="form_user">
         <fieldset>
             <legend>Création d'un compte utilisateur</legend>
             <div>

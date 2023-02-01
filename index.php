@@ -9,13 +9,6 @@ spl_autoload_register(function (string $sClass) {
 
 session_start();
 
-use Blog\Model\Article;
-use Blog\Model\User;
-use Blog\Model\Address;
-use Blog\Repository\ArticleRepository;
-use Blog\Repository\CategoryRepository;
-use Blog\Repository\UserRepository;
-
 require_once 'lib/config.php';
 require_once 'function.php';
 //require_once 'Model/Article.php';
@@ -25,11 +18,99 @@ require_once 'function.php';
 //require_once 'Repository/ArticleRepository.php';
 //require_once 'Repository/CategoryRepository.php';
 
-$aFlashMessages = [];
+use Blog\Model\Article;
+use Blog\Model\User;
+use Blog\Model\Address;
+use Blog\Repository\ArticleRepository;
+use Blog\Repository\CategoryRepository;
+use Blog\Repository\UserRepository;
+
+if(isset($_GET['action'])){
+    switch ($_GET['action']){
+        case 'logout':
+            session_destroy();
+            session_start();
+            break;
+    }
+}
+
+if(!isset($_SESSION['id'])){
+    $_SESSION['id'] = uniqid();
+    $_SESSION['flashes'] = [];
+}
+
+if (isset($_POST["field_login_username"], $_POST["field_login_password"])) {
+    $sUsername = strip_tags($_POST["field_login_username"]);
+    $sPassword = strip_tags($_POST["field_login_password"]);
+
+    $oUser = authUser($sUsername, $sPassword);
+    if ($oUser instanceof User) {
+        $_SESSION['user'] = $oUser;
+        echo 'authentificiation réussit';
+        $_SESSION['flashes'][] = ['success' => 'Bienvenue'.$oUser->getUserName()];
+        header('Location: index.php?page=user');
+        exit;
+    }else{
+        $_SESSION['flashes'][]=['danger'=>'Identifiants invalides'];
+    }
+
+    $_SESSION['flashes'][] = ['ERREUR' => 'MdP ou Username invalide'];
+}
+
+if (isset(
+    $_POST["field_username"],
+    $_POST["field_email"],
+    $_POST["field_birthdate"],
+    $_POST["field_password"],
+    $_POST["field_street"],
+    $_POST["field_postalCode"],
+    $_POST["field_city"],
+    $_POST["field_country"],
+)) {
+$sUsername = strip_tags($_POST["field_username"]);
+$sEmail = strip_tags($_POST["field_email"]);
+$dBirthDate = strip_tags($_POST["field_birthdate"]);
+$sPassword = strip_tags($_POST["field_password"]);
+$sStreet = strip_tags($_POST["field_street"]);
+$sPostalCode = strip_tags($_POST["field_postalCode"]);
+$sCity = strip_tags($_POST["field_city"]);
+$sCountry = strip_tags($_POST["field_country"]);
+
+$oAddress = new Address(
+    $sStreet,
+    $sPostalCode,
+    $sCity,
+    $sCountry,
+);
+    if (!UserRepository::isExist($sUsername)) {
+        $oUser = new User($sUsername, $sEmail, new DateTime($dBirthDate), hashPassword($sPassword), $oAddress, );
+        $oUser->setRole(1);
+        UserRepository::save($oUser);
+        $_SESSION['user'] = $oUser;
+        $_SESSION['flashes'][] = ['SUCCESS' => 'user created'];
+        header('Location: index.php?page=user');
+        exit;
+    }
+
+    $_SESSION['flashes'][] = ['ERREUR' => 'utilisateur existant'];
+}
+
+//if (isset($_POST["field_article_subject"], $_POST["field_article_content"], $_POST["field_article_type"])) {
+//
+//    foreach ($aCats as $oCat) {
+//        if ($_POST["field_article_type"] === $oCat->getName()) {
+//            $oArticle = new Article($_POST["field_article_subject"], $_POST["field_article_content"], $oCat);
+//            ArticleRepository::save($oArticle);
+//            break;
+//        }
+//    }
+//}
+
+//$aFlashMessages = [];
 
 //$aCategory = CategoryRepository::findAll();
 
-print_r($aFlashMessages);
+//print_r($aFlashMessages);
 
 //UserRepository::isExist($sUsername);
 //UserRepository::find($sUsername);
@@ -57,72 +138,24 @@ print_r($aFlashMessages);
 </head>
 <body>
 
-<?php include 'views/header.php';
+<?php
 
-if (isset($_POST["field_login_username"], $_POST["field_login_password"])) {
-    $sUsername = strip_tags($_POST["field_login_username"]);
-    $sPassword = strip_tags($_POST["field_login_password"]);
+include 'views/header.php';
 
-    $oUser = authUser($sUsername, $sPassword);
-    if ($oUser instanceof User) {
-        $_SESSION['user'] = $oUser;
-        echo 'authentificiation réussit';
-        $aFlashMessages[] = ['SUCCESS' => 'logged'];
-    }
+//foreach ($_SESSION['flashes'] as $iIds => $aMessages){
+//    foreach ($aMessages as $sType => $sMessage){
+//        echo '<div class="alert alert-'.$sType.'">'.$sMessage.'</div>';
+//    }
+//}
 
-    $aFlashMessages[] = ['ERREUR' => 'MdP ou Username invalide'];
-}
-
-if (isset(
-    $_POST["field_username"],
-    $_POST["field_email"],
-    $_POST["field_birthdate"],
-    $_POST["field_password"],
-    $_POST["field_street"],
-    $_POST["field_postalCode"],
-    $_POST["field_city"],
-    $_POST["field_country"],
-)) {
-    $sUsername = strip_tags($_POST["field_username"]);
-    $sEmail = strip_tags($_POST["field_email"]);
-    $dBirthDate = strip_tags($_POST["field_birthdate"]);
-    $sPassword = strip_tags($_POST["field_password"]);
-    $sStreet = strip_tags($_POST["field_street"]);
-    $sPostalCode = strip_tags($_POST["field_postalCode"]);
-    $sCity = strip_tags($_POST["field_city"]);
-    $sCountry = strip_tags($_POST["field_country"]);
-
-    $oAddress = new Address(
-        $sStreet,
-        $sPostalCode,
-        $sCity,
-        $sCountry,
-    );
-
-    if (!UserRepository::isExist($sUsername)) {
-        $oUser = new User($sUsername, $sEmail, new DateTime($dBirthDate), hashPassword($sPassword), $oAddress);
-        UserRepository::save($oUser);
-        $aFlashMessages[] = ['SUCCESS' => 'utilisateur enregistré'];
-        header('Location: index.php?page=home');
-        exit;
-    }
-
-    $aFlashMessages[] = ['ERREUR' => 'utilisateur existant'];
-}
-
-if (isset($_POST["field_article_subject"], $_POST["field_article_content"], $_POST["field_article_type"])) {
-
-    foreach ($aCats as $oCat) {
-        if ($_POST["field_article_type"] === $oCat->getName()) {
-            $oArticle = new Article($_POST["field_article_subject"], $_POST["field_article_content"], $oCat);
-            ArticleRepository::save($oArticle);
-            break;
-        }
-    }
-}
+//$_SESSION['flashes'] = [];
 
 
-print_r($aFlashMessages);
+
+
+
+
+//print_r($_SESSION['user']->getRole());
 
 $sPage = $_GET['page'] ?? PAGE_HOME;
 $sFilename = 'views/' . $sPage . '.php';

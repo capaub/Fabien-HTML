@@ -10,7 +10,7 @@ class UserRepository
      * @param User $oUser
      * @return void
      */
-    public static function save(User $oUser)
+    public static function save(User $oUser): void
     {
         file_put_contents(SAVE_DIR . DIRECTORY_SEPARATOR . $oUser->getUserName() . '.user', serialize($oUser));
     }
