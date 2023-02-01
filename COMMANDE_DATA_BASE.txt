@@ -1,0 +1,44 @@
+CREATE DATABASE IF NOT EXISTS `blog`;
+
+USE `blog`;
+
+DROP TABLE IF EXISTS `category`;
+CREATE TABLE IF NOT EXISTS `category` (
+	`id` INT(2) NOT NULL PRIMARY KEY AUTO_INCREMENT, 				-- CLE A UTILISER PLUS TARD
+	`name` VARCHAR(50) NOT NULL
+);
+
+-- ALTER TABLE `category`
+-- 	ADD COLUMN `test1-id` VARCHAR(50) NOT NULL AFTER `id`
+-- ;
+
+-- ALTER TABLE `category`
+-- 	DROP COLUMN `test1-id`
+
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
+	`id` INT(3) NOT NULL,
+	`username` VARCHAR(50) NOT NULL,
+	`password` VARCHAR(255) NOT NULL COMMENT "Version hash du MdP",
+	`role` INT(1) NOT NULL,
+	`email` VARCHAR(255) NOT NULL,
+	`createdAt` DATETIME NOT NULL,
+	`connectedAt` DATETIME NOT NULL
+);
+
+DROP TABLE IF EXISTS `article`;
+CREATE TABLE IF NOT EXISTS `article` (
+	`id` INT(3) NOT NULL,
+	`category_id` INT(3) NOT NULL, -- CLE ETRANGERE 
+	`title` VARCHAR(150) NOT NULL,
+	`contend` TEXT NOT NULL,
+	`status` INT(1) NOT NULL,
+	`createdAt` DATETIME NOT NULL
+);
+
+
+-- INSERT INTO `category` (`id`, `name`)
+-- VALUES (1, `Auto/Moto`);
+
+INSERT INTO `category` (`id`, `name`)
+VALUES (2, `Santé`);
