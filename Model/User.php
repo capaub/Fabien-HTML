@@ -53,6 +53,7 @@ class User
         $this->email = $sEmail;
         $this->birthAt = $dBirthAt;
         $this->password = $sPassword;
+        $this->connectedAt = new DateTime('now');
         $this->createdAt = new DateTime('now');
         $this->role = self::ROLE_USER;
     }

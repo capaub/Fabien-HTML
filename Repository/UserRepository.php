@@ -13,20 +13,16 @@ class UserRepository
     public static function save(User $oUser): void
     {
         global $oPdo;
-        $dCreatedAt = $oUser->getCreatedAt()->format('Y-m-d');
-        $dConnectedAt = $oUser->getConnectedAt()->format('Y-m-d H:i:s');
-        $dBirthAt = $oUser->getBirthAt()->format('Y-m-d');
         $oPdo->query('INSERT INTO user (username, password, role, email, createdAt, connectedAt, birthAt)
         VALUES (
                 "' . $oUser->getUserName() . '",
                 "' . $oUser->getPassword() . '",
                 "' . $oUser->getRole() . '",
                 "' . $oUser->getEmail() . '",
-                "' . $dCreatedAt . '",
-                "' . $dConnectedAt . '",
-                "' . $dBirthAt . '")
+                "' . $oUser->getCreatedAt()->format('Y-m-d') . '",
+                "' . $oUser->getConnectedAt()->format('Y-m-d H:i:s') . '",
+                "' . $oUser->getBirthAt()->format('Y-m-d') . '")
                 ');
-//        file_put_contents(SAVE_DIR . DIRECTORY_SEPARATOR . $oUser->getUserName() . '.user', serialize($oUser));
     }
 
     /**
