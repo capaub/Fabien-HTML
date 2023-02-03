@@ -28,7 +28,7 @@ class User
     /** @var DateTime */
     private DateTime $updatedAt;
     /** @var DateTime */
-    private DateTime $lastConnectionAt;
+    private DateTime $connectedAt;
 
     public const ROLE_ADMIN = 1;
     public const ROLE_MANAGER = 2;
@@ -46,15 +46,13 @@ class User
      * @param string $sEmail
      * @param DateTime $dBirthAt
      * @param string $sPassword
-     * @param Address $oAddress
      */
-    public function __construct(string $userName, string $sEmail, DateTime $dBirthAt, string $sPassword, Address $oAddress)
+    public function __construct(string $userName, string $sEmail, DateTime $dBirthAt, string $sPassword)
     {
         $this->userName = $userName;
         $this->email = $sEmail;
         $this->birthAt = $dBirthAt;
         $this->password = $sPassword;
-        $this->address = $oAddress;
         $this->createdAt = new DateTime('now');
         $this->role = self::ROLE_USER;
     }
@@ -242,18 +240,18 @@ class User
     /**
      * @return DateTime
      */
-    public function getLastConnectionAt(): DateTime
+    public function getConnectedAt(): DateTime
     {
-        return $this->lastConnectionAt;
+        return $this->connectedAt;
     }
 
     /**
-     * @param DateTime $lastConnectionAt
+     * @param DateTime $connectedAt
      * @return User
      */
-    public function setLastConnectionAt(DateTime $lastConnectionAt): User
+    public function setConnectedAt(DateTime $connectedAt): User
     {
-        $this->lastConnectionAt = $lastConnectionAt;
+        $this->connectedAt = $connectedAt;
         return $this;
     }
 

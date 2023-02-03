@@ -1,6 +1,6 @@
 <?php
 
-spl_autoload_register(function (string $sClass) {
+spl_autoload_register(static function (string $sClass) {
     $sFilepath = str_replace(['\\', 'Blog/'], ['/', ''], $sClass) . '.php';
     if (file_exists($sFilepath)) {
         require_once $sFilepath;
@@ -18,6 +18,14 @@ require_once 'function.php';
 //require_once 'Repository/ArticleRepository.php';
 //require_once 'Repository/CategoryRepository.php';
 
+$sDSN = 'mysql:dbname=blog;host=localhost;charset=UTF8';
+$aOptions = [
+    \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES UTF8',
+];
+$oPdo = new \PDO($sDSN, 'root', '', $aOptions);
+$oPdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_WARNING);
+$oPdoStatement = $oPdo->query('SELECT * FROM user');
+
 use Blog\Model\Article;
 use Blog\Model\User;
 use Blog\Model\Address;
@@ -25,8 +33,8 @@ use Blog\Repository\ArticleRepository;
 use Blog\Repository\CategoryRepository;
 use Blog\Repository\UserRepository;
 
-if(isset($_GET['action'])){
-    switch ($_GET['action']){
+if (isset($_GET['action'])) {
+    switch ($_GET['action']) {
         case 'logout':
             session_destroy();
             session_start();
@@ -34,8 +42,8 @@ if(isset($_GET['action'])){
     }
 }
 
-if(!isset($_SESSION['id'])){
-    $_SESSION['id'] = uniqid();
+if (!isset($_SESSION['id'])) {
+    $_SESSION['id'] = uniqid("", false);
     $_SESSION['flashes'] = [];
 }
 
@@ -47,14 +55,12 @@ if (isset($_POST["field_login_username"], $_POST["field_login_password"])) {
     if ($oUser instanceof User) {
         $_SESSION['user'] = $oUser;
         echo 'authentificiation réussit';
-        $_SESSION['flashes'][] = ['success' => 'Bienvenue'.$oUser->getUserName()];
+        $_SESSION['flashes'][] = ['success' => 'Bienvenue' . $oUser->getUserName()];
         header('Location: index.php?page=user');
         exit;
-    }else{
-        $_SESSION['flashes'][]=['danger'=>'Identifiants invalides'];
     }
 
-    $_SESSION['flashes'][] = ['ERREUR' => 'MdP ou Username invalide'];
+    $_SESSION['flashes'][] = ['danger' => 'Identifiants invalides'];
 }
 
 if (isset(
@@ -67,23 +73,23 @@ if (isset(
     $_POST["field_city"],
     $_POST["field_country"],
 )) {
-$sUsername = strip_tags($_POST["field_username"]);
-$sEmail = strip_tags($_POST["field_email"]);
-$dBirthDate = strip_tags($_POST["field_birthdate"]);
-$sPassword = strip_tags($_POST["field_password"]);
-$sStreet = strip_tags($_POST["field_street"]);
-$sPostalCode = strip_tags($_POST["field_postalCode"]);
-$sCity = strip_tags($_POST["field_city"]);
-$sCountry = strip_tags($_POST["field_country"]);
+    $sUsername = strip_tags($_POST["field_username"]);
+    $sEmail = strip_tags($_POST["field_email"]);
+    $dBirthDate = strip_tags($_POST["field_birthdate"]);
+    $sPassword = strip_tags($_POST["field_password"]);
+    $sStreet = strip_tags($_POST["field_street"]);
+    $sPostalCode = strip_tags($_POST["field_postalCode"]);
+    $sCity = strip_tags($_POST["field_city"]);
+    $sCountry = strip_tags($_POST["field_country"]);
 
-$oAddress = new Address(
-    $sStreet,
-    $sPostalCode,
-    $sCity,
-    $sCountry,
-);
+    $oAddress = new Address(
+        $sStreet,
+        $sPostalCode,
+        $sCity,
+        $sCountry,
+    );
     if (!UserRepository::isExist($sUsername)) {
-        $oUser = new User($sUsername, $sEmail, new DateTime($dBirthDate), hashPassword($sPassword), $oAddress, );
+        $oUser = new User($sUsername, $sEmail, new DateTime($dBirthDate), hashPassword($sPassword));
         $oUser->setRole(1);
         UserRepository::save($oUser);
         $_SESSION['user'] = $oUser;
@@ -151,10 +157,6 @@ include 'views/header.php';
 //$_SESSION['flashes'] = [];
 
 
-
-
-
-
 //print_r($_SESSION['user']->getRole());
 
 $sPage = $_GET['page'] ?? PAGE_HOME;
@@ -164,8 +166,12 @@ if (!file_exists($sFilename)) {
 }
 include $sFilename;
 
+print_r($_SESSION['flashes']);
+$_SESSION['flashes'] = [];
+
 include 'views/footer.php';
 ?>
+
 <script src="js/script.js"></script>
 </body>
 </html>
