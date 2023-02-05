@@ -2,23 +2,23 @@
 
 use Blog\Repository\UserRepository;
 
-$oUsers = UserRepository::findAll();
+$aUsers = UserRepository::findAll();
 
 ?>
-<table>
-    <thead>
-    <tr>
-        <th>Nom</th>
-        <th>Email</th>
-        <th>date de naissance</th>
-        <th>Rôle</th>
-        <th>Mot de passe</th>
-        <th>Date de création</th>
-        <th>Date de connexion</th>
-    </tr>
+<table class="table container">
+    <thead class="row">
+        <tr class="col">
+            <th class="">Nom</th>
+            <th class="">Email</th>
+            <th class="">date de naissance</th>
+            <th class="">Rôle</th>
+            <th class="">Mot de passe</th>
+            <th class="">Date de création</th>
+            <th class="">Date de connexion</th>
+        </tr>
     </thead>
     <tbody>
-    <?php foreach ($oUsers as $oUser) : ?>
+    <?php foreach ($aUsers as $oUser) : ?>
         <tr>
             <td><?= $oUser->getUserName() ?></td>
             <td><?= $oUser->getEmail() ?></td>

@@ -140,9 +140,9 @@ if (isset(
     <meta charset="UTF-8">
     <title><?php echo $sTitle = $_GET['title'] ?? TITLE_HOME; ?>- Mon site</title>
     <meta name="description" content="super blog">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/css/bootstrap.min.css">
 </head>
-<body>
+<body class="bg-dark">
 
 <?php
 
@@ -172,6 +172,6 @@ $_SESSION['flashes'] = [];
 include 'views/footer.php';
 ?>
 
-<script src="js/script.js"></script>
+<script src="js/js/bootstrap.min.js"></script>
 </body>
 </html>

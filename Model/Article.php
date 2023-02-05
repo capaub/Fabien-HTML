@@ -2,7 +2,7 @@
 
 namespace Blog\Model;
 
-use Blob\Model\Category;
+use Blog\Model\Category;
 use DateTime;
 
 require 'Category.php';
@@ -27,10 +27,10 @@ class Article
     /** @var string */
     private string $content;
     /** @var int */
-    private int $status;
-    /** @var Category */
     private Category $category;
     /** @var DateTime */
+    private int $status;
+    /** @var Category */
     private DateTime $createdAt;
 
     /**

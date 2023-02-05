@@ -13,9 +13,8 @@
             <div>
                 <label for="field_contact_type">Catégorie</label>
                 <select id="field_contact_type" name="field_contact_type">
-                    <option>Auto/Moto</option>
-                    <option>Santé</option>
-                    <option>High-tech</option>
+                    <option>Prioritaire</option>
+                    <option>Message libre</option>
                 </select>
             </div>
             <div>

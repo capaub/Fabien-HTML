@@ -13,6 +13,7 @@ class Category
     public function __construct(string $sName)
     {
         $this->name = $sName;
+        return self::getName();
     }
 
     /**
