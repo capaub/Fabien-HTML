@@ -14,8 +14,32 @@ class ArticleRepository
      */
     public static function save(Article $oArticle): void
     {
-        file_put_contents(SAVE_DIR . DIRECTORY_SEPARATOR . uniqid("art_", false) . '.article', serialize($oArticle));
+        global $oPdo;
+        $oPdo->query('INSERT INTO article (category_id, title, content, status, createdAt)
+        VALUES (
+                "' . $oArticle->getCategory()->getName() . '",
+                "' . $oArticle->getTitle() . '",
+                "' . $oArticle->getContent() . '",
+                "' . $oArticle->getStatus() . '",
+                "' . $oArticle->getCreatedAt()->format('Y-m-d') . '"
+                ');
+//        file_put_contents(SAVE_DIR . DIRECTORY_SEPARATOR . uniqid("art_", false) . '.article', serialize($oArticle));
     }
+
+//    public static function save(Article $oArticle): void
+//    {
+//        global $oPdo;
+//        $oPdo->query('INSERT INTO Article();
+//        VALUES (
+//                "' . $oArticle->getTitle() . '",
+//                "' . $oArticle->getPassword() . '",
+//                "' . $oArticle->getRole() . '",
+//                "' . $oArticle->getEmail() . '",
+//                "' . $oArticle->getCreatedAt()->format('Y-m-d') . '",
+//                "' . $oArticle->getConnectedAt()->format('Y-m-d H:i:s') . '",
+//                "' . $oArticle->getBirthAt()->format('Y-m-d') . '")
+//                ');
+//    }
 //    public static function save(User $oUser): void
 //    {
 //        global $oPdo;

@@ -19,7 +19,7 @@ class Article
     public const STATUS = [
         self::STATUS_PUBLISHED => 'Publié',
         self::STATUS_DRAFTED => 'Brouillon',
-        self::STATUS_DELETED => 'Spprimé',
+        self::STATUS_DELETED => 'Supprimé',
     ];
 
     /** @var string */

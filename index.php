@@ -29,6 +29,7 @@ $oPdoStatement = $oPdo->query('SELECT * FROM user');
 use Blog\Model\Article;
 use Blog\Model\User;
 use Blog\Model\Address;
+use Blog\Model\Category;
 use Blog\Repository\ArticleRepository;
 use Blog\Repository\CategoryRepository;
 use Blog\Repository\UserRepository;
@@ -99,6 +100,32 @@ if (isset(
 
     $_SESSION['flashes'][] = ['ERREUR' => 'utilisateur existant'];
 }
+
+//if (isset(
+//    $_POST["field_article_subject"],
+//    $_POST["field_article_content"],
+//    $_POST["field_article_category"],
+//    $_SESSION['user']) && $_SESSION['user'] instanceof User
+//) {
+//
+//    $sTitle = strip_tags($_POST["field_article_subject"]);
+//    $sContent = strip_tags($_POST["field_article_content"]);
+//    $sCategory = strip_tags($_POST["field_article_category"]);
+//
+//    $oCategory = new Category($sCategory);
+//
+//    $oArticle = new Article($sTitle, $sContent, $oCategory);
+//
+//    ArticleRepository::save($oArticle);
+//
+//    $_SESSION['flashes'][] = ['SUCCESS' => 'Article soumis'];
+//
+//    header('Location: index.php?page=user');
+//
+//    $_SESSION['flashes'][] = ['ERREUR' => 'Probleme d\'enregistrement'];
+//
+//    exit;
+//}
 
 //if (isset($_POST["field_article_subject"], $_POST["field_article_content"], $_POST["field_article_type"])) {
 //
