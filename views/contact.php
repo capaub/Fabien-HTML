@@ -1,24 +1,24 @@
 <main>
-    <form action="?page=<?php echo PAGE_CONTACT; ?>" method="POST" class="form-example">
-        <fieldset>
-            <legend>Formulaire de contact</legend>
-            <div>
-                <label for="field_contact_subject">Titre</label>
-                <input type="text" name="field_contact_subject" id="field_contact_subject" required>
+    <form class="container" action="?page=<?php echo PAGE_CONTACT; ?>" method="POST" class="form-example">
+        <fieldset class="row">
+            <legend class="text-center text-white">Formulaire de contact</legend>
+            <div class="row">
+                <label class="col-8 offset-2 text-white" for="field_contact_subject">Titre</label>
+                <input class="col-8 offset-2" type="text" name="field_contact_subject" id="field_contact_subject" required>
             </div>
-            <div>
-                <label for="field_contact_content">Message</label>
-                <textarea name="field_contact_content" id="field_contact_content" cols="30" rows="10"></textarea>
+            <div class="row">
+                <label class="col-8 offset-2 text-white" for="field_contact_content">Message</label>
+                <textarea class="col-8 offset-2" name="field_contact_content" id="field_contact_content" cols="30" rows="10"></textarea>
             </div>
-            <div>
-                <label for="field_contact_type">Catégorie</label>
-                <select id="field_contact_type" name="field_contact_type">
+            <div class="row">
+                <label class="text-white col-8 offset-2" for="field_contact_type">Catégorie</label>
+                <select class="col-3 offset-2" id="field_contact_type" name="field_contact_type">
                     <option>Prioritaire</option>
                     <option>Message libre</option>
                 </select>
             </div>
-            <div>
-                <button name="send_contact">Envoyer</button>
+            <div class="row">
+                <button class="col-2 offset-2 my-3" name="send_contact">Envoyer</button>
             </div>
         </fieldset>
     </form>

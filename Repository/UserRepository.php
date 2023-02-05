@@ -39,7 +39,6 @@ class UserRepository
 
         while ($aUser = $oUsers->fetch()) {
             $oUser = new User($aUser['username'], $aUser['email'], new \DateTime($aUser['birthAt']), $aUser['password']);
-            $oUser->setConnectedAt(new \DateTime($aUser['connectedAt']));
             $oUser->setCreatedAt(new \DateTime($aUser['createdAt']));
             $oUser->setRole($aUser['role']);
 

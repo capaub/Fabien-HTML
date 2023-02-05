@@ -1,0 +1,82 @@
+# CREATE DATABASE IF NOT EXISTS `blog`;
+
+USE `blog`;
+
+# DROP TABLE IF EXISTS `category`;
+# CREATE TABLE IF NOT EXISTS `category` (
+# 	`id` INT(3) NOT NULL PRIMARY KEY AUTO_INCREMENT, 				-- CLE A UTILISER PLUS TARD
+# 	`name` VARCHAR(50) NOT NULL
+# );
+
+-- ALTER TABLE `category`
+-- 	ADD COLUMN `test1-id` VARCHAR(50) NOT NULL AFTER `id`
+-- ;
+
+-- ALTER TABLE `category`
+-- 	DROP COLUMN `test1-id`
+
+# DROP TABLE IF EXISTS `user`;
+# CREATE TABLE IF NOT EXISTS `user` (
+# 	`id` INT(3) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+# 	`username` VARCHAR(50) NOT NULL,
+# 	`password` VARCHAR(255) NOT NULL COMMENT 'Version hash du MdP',
+# 	`role` INT(1) NOT NULL,
+# 	`email` VARCHAR(255) NOT NULL,
+# 	`createdAt` DATETIME NOT NULL,
+# 	`connectedAt` DATETIME NOT NULL,
+# 	`birthAt` DATETIME NOT NULL
+# );
+
+# DROP TABLE IF EXISTS `article`;
+# CREATE TABLE IF NOT EXISTS `article` (
+# 	`id` INT(3) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+# 	`category_id` INT(3) NOT NULL, -- CLE ETRANGERE
+# 	`title` VARCHAR(150) NOT NULL,
+# 	`content` TEXT NOT NULL,
+# 	`status` INT(1) NOT NULL,
+# 	`createdAt` DATETIME NOT NULL
+# );
+
+# INSERT INTO `category` (`name`)
+# VALUES
+#     ('France'),
+# 	('International'),
+# 	('Économie'),
+# 	('Sciences et technologies'),
+# 	('Divertissement'),
+# 	('Sports'),
+# 	('Santé')
+# ;
+
+# INSERT INTO `article` (category_id, title, content, status, createdAt)
+# VALUES
+#     (1, 'Retraites : Elisabeth Borne en posture délicate', 'lorem epsum', 2, '2022-01-01'),
+# 	(1, 'Réforme des retraites : un durcissement de la grève pendant les vacances de février', 'Après une deuxième journée de mobilisation contre la réforme des retraites, mardi 31 janvier, l’intersyndicale a appelé à deux nouveaux jours de manifestations les mardi 7 et samedi 11 février. Cette deuxième date correspond à un week-end de départ en vacances. ', 1, NOW()),
+#
+# 	(2, 'Guerre en Ukraine', 'La Russie célèbre le 80e anniversaire de la bataille de Stalingrad, conclue par la victoire décisive de l\'Armée rouge sur l\'envahisseur nazi. Une mémoire désormais exploitée politiquement par le Kremlin.', 1, '2022-01-01'),
+# 	(2, 'Etats-Unis : Aucun document confidentiel retrouvé après une perquisition de la résidence balnéaire de Biden', ' Vérifications D’après son avocat, cette opération, sous la houlette du ministère de la Justice, était « prévue »', 1, '2023-01-01'),
+#
+# 	(3, 'Baisse de revenus historique pour Meta, plombé par la pub et le métavers', '$$$$ L’entreprise de Mark Zuckerberg a vu ses bénéfices annuels reculer pour la première fois depuis qu’elle est cotée, mais la publicité a mieux résisté que prévu, au soulagement des actionnaires', 1, '2023-01-01'),
+# 	(3, 'Casino songe à marier Monoprix, Franprix et Géant à Jardiland et Gamm\' Vert', 'Le groupe étudie un rapprochement de ses activités de distribution en France avec Teract, la filiale d\'InVivo qui développe aussi l\'enseigne Grand Marché Frais d\'ici.
+#
+# Reconfiguration en vue dans la grande distribution française. Suite à une dépêche de Bloomberg évoquant un projet d\'alliance, les groupes Casino et Teract ont confirmé ce mercredi soir «avoir engagé des discussions exploratoires qui pourraient mener au rapprochement des activités de distribution des deux groupes en France au sein d\'une même entité contrôlée par Casino».', 1, NOW()),
+#
+# 	(4, 'Galaxy Book 3 Ultra : Samsung lance un PC portable ultra haut de gamme', 'Longtemps avant Apple, Samsung a adopté la marque Ultra pour designer ses produits les plus puissants et sophistiqués. Souvent, ce sont également les plus encombrants.', 1, '2022-01-01'),
+# 	(4, 'Un nouvel outil d’IA vocale déjà utilisé pour contrefaire la voix de célébrités', 'Il y a quelques jours, la startup spécialisée dans l’intelligence artificielle vocale ElevenLabs lançait une version bêta de sa plateforme qui permet aux utilisateurs de créer des voix synthétiques totalement nouvelles pour du texte-vers-voix ou pour cloner la voix de quelqu’un. Il n’aura malheureusement fallu que quelques jours pour qu’internet commence à utiliser cet outil de manière malintentionnée. L’entreprise a révélé sur Twitter constater “un nombre grandissant de cas d’abus de clonage vocal” et réfléchit aux moyens de gérer le problème en “implémentant des garde-fous supplémentaires”.', 2, NOW()),
+#
+# 	(5, '« Astérix & Obélix. L’Empire du Milieu » : la galère des irréductibles Gaulois en Chine', 'Voilà désormais vingt-quatre ans que notre irréductible village gaulois imaginé par le tandem Uderzo-Goscinny vient régulièrement remplir d’or la marmite du cinéma français. Le succès n’a pas fait un pli, s’imposant dès la première adaptation de Claude Zidi en 1999 (Astérix et Obélix contre César). Les différents opus qui ont suivi, conduits par Alain Chabat (Astérix et Obélix. Mission Cléopâtre, 2002), Frédéric Forestier et Thomas Langmann (Astérix aux Jeux olympiques, 2008), Laurent Tirard (Astérix et Obélix. Au service de Sa Majesté, 2012), ont gardé le cap et engrangé suffisamment de millions pour que l’aventure soit chaque fois reconduite.', 2, NOW()),
+# 	(5, '«Aftersun» touche le fond de la piscine', 'Un père, sa fille, britanniques, passent une semaine de vacances dans un hôtel avec piscine, au bord d’une côte en Turquie. Pas le grand luxe, pas les moyens, mais ce qu’il faut au farniente, aux activités élémentaires de vacanciers, karaoké, jeux d’arcade d’un autre temps (les années 90), têtes piquées dans l’eau, nuits chaudes, alcool, flirts sans conséquence, temps suspendu. Les souvenirs au prisme de la mémoire de Sophie, 11 ans, dont quelques flashforward stroboscopiques puis au saut du lit la montrent adulte se remémorant hébétée, forment une succession de scènes languissantes et aléatoires, dans un grand effort impressionniste de notations jolies, éparses, fragmentaires, pour ce faire surcadrées, surlignées.', 1, NOW()),
+#
+# 	(6, 'EN DIRECT - Montpellier-PSG: Paris gagne à nouveau mais perd Mbappé et Ramos avant la Ligue des champions', 'Vainqueur laborieux sur la pelouse de Montpellier mercredi (1-3), le PSG a repris 5 points d\'avance sur l\'OM et 6 sur Lens en tête de la Ligue 1. Mais à deux semaines du Bayern Munich, tous les yeux sont rivés sur Kylian Mbappé et Sergio Ramos, sortis sur blessure.', 1, '2023-02-01'),
+# 	(6, 'STADE DE REIMS - FC LORIENT (4 - 2) - Résumé - (SdR - FCL) / 2022-2023', 'Ca fait tellement plaisir de voir jouer le stade de Reims à ce niveau balogun nous fait vraiment du bien ça fait longtemps que on avait pas eu un attaquant de ce niveau et le reste de l\'équipe et incroyable franchement vraiment content des joueurs et entraîneur.', 2, '2022-05-01'),
+#
+# 	(7, 'Tabagisme : Et si la solution pour arrêter de fumer était le tabac ?', 'Ça coûte de plus en plus cher, c’est dangereux pour la santé et ça ne donne pas une bonne haleine. Il y a autant de raisons pour arrêter de fumer que de solutions qui ont été développées ces dernières années. Et si le miracle venait du tabac lui-même ? Sur le papier (ou la feuille), l’idée peut sembler surprenante. Cette solution a pourtant bien été validée par la Haute Autorité de santé pour des essais cliniques. Mais elle n’est pas si nouvelle puisqu’elle a été testée au début des années 2000, à partir d’un extrait allergénique.', 1, '2022-05-01'),
+# 	(7, 'Pénuries : Doliprane, Dafalgan, Efferalgan.... il est de nouveau possible d\'acheter ces médicaments à base de paracétamol sur internet', ' La vente en ligne de médicaments à base de paracétamol était interdite depuis le 3 janvier.
+#
+# Face aux difficultés d\'approvisionnement, le gouvernement avait décidé d\'interdire la vente en ligne de médicaments à base de paracétamol. "La vente par internet des spécialités composées exclusivement de paracétamol est suspendue jusqu\'au 31 janvier 2023", pouvait-on lire dans l\'arrêté publié le 3 janvier au Journal officiel. ', 2, '2023-02-01')
+# ;
+
+
+
+
+
