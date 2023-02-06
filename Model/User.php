@@ -29,6 +29,8 @@ class User
     private DateTime $updatedAt;
     /** @var DateTime */
     private DateTime $connectedAt;
+    /** @var int */
+    private int $id;
 
     public const ROLE_ADMIN = 1;
     public const ROLE_MANAGER = 2;
@@ -255,5 +257,24 @@ class User
         $this->connectedAt = $connectedAt;
         return $this;
     }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return User
+     */
+    public function setId(int $id): User
+    {
+        $this->id = $id;
+        return $this;
+    }
+
 
 }

@@ -2,27 +2,40 @@
 
 namespace Blog\Repository;
 
+use Blog\Manager\DbManager;
 use Blog\Model\User;
 
 class UserRepository
 {
     /**
      * @param User $oUser
-     * @return void
+     * @return bool
      */
-    public static function save(User $oUser): void
+    public static function save(User $oUser): bool
     {
-        global $oPdo;
-        $oPdo->query('INSERT INTO user (username, password, role, email, createdAt, connectedAt, birthAt)
+        $oPdo = DbManager::getInstance();
+
+        $sQuery = 'INSERT INTO user (username, password, role, email, createdAt, connectedAt, birthAt)
         VALUES (
-                "' . $oUser->getUserName() . '",
-                "' . $oUser->getPassword() . '",
-                "' . $oUser->getRole() . '",
-                "' . $oUser->getEmail() . '",
-                "' . $oUser->getCreatedAt()->format('Y-m-d') . '",
-                "' . $oUser->getConnectedAt()->format('Y-m-d H:i:s') . '",
-                "' . $oUser->getBirthAt()->format('Y-m-d') . '")
-                ');
+                :username,
+                :password,
+                :role,
+                :email,
+                :createdAt,
+                :connectedAt,
+                :birthAt)';
+
+        $oPdoUser = $oPdo->prepare($sQuery);
+
+        $oPdoUser->bindValue(':username', $oUser->getUserName(), \PDO::PARAM_STR);
+        $oPdoUser->bindValue(':password', $oUser->getPassword(), \PDO::PARAM_STR);
+        $oPdoUser->bindValue(':role', $oUser->getRole(), \PDO::PARAM_INT);
+        $oPdoUser->bindValue(':email', $oUser->getEmail(), \PDO::PARAM_STR);
+        $oPdoUser->bindValue(':createdAt', $oUser->getCreatedAt()->format('Y-m-d'), \PDO::PARAM_STR);
+        $oPdoUser->bindValue(':connectedAt', $oUser->getConnectedAt()->format('Y-m-d'), \PDO::PARAM_STR);
+        $oPdoUser->bindValue(':birthAt', $oUser->getBirthAt()->format('Y-m-d'), \PDO::PARAM_STR);
+
+        return $oPdoUser->execute();
     }
 
     /**
@@ -31,7 +44,7 @@ class UserRepository
      */
     public static function findAll(): array
     {
-        global $oPdo;
+        $oPdo = DbManager::getInstance();
 
         $aUsers = [];
 
@@ -54,17 +67,22 @@ class UserRepository
      */
     public static function find($sUsername): ?User
     {
-        global $oPdo;
+        $oPdo = DbManager::getInstance();
 
         if (self::isExist($sUsername)) {
 
-            $aBdUser = $oPdo->query('SELECT * FROM user WHERE username =  "' . $sUsername . '"')->fetch();
-            if ($aBdUser) {
+            $oPdoUser = $oPdo->prepare('SELECT * FROM user WHERE `username` =  :username');
+            $oPdoUser->bindValue(':username', $sUsername, \PDO::PARAM_STR);
+            $oPdoUser->execute();
 
-                $oUser = new User($aBdUser['username'], $aBdUser['email'], new \DateTime($aBdUser['birthAt']), $aBdUser['password']);
-                $oUser->setConnectedAt(new \DateTime($aBdUser['connectedAt']));
-                $oUser->setCreatedAt(new \DateTime($aBdUser['createdAt']));
-                $oUser->setRole($aBdUser['role']);
+            $oBdUser = $oPdoUser->fetch();
+
+            if ($oBdUser) {
+
+                $oUser = new User($oBdUser['username'], $oBdUser['email'], new \DateTime($oBdUser['birthAt']), $oBdUser['password']);
+                $oUser->setConnectedAt(new \DateTime($oBdUser['connectedAt']));
+                $oUser->setCreatedAt(new \DateTime($oBdUser['createdAt']));
+                $oUser->setRole($oBdUser['role']);
 
                 return $oUser;
             }
@@ -78,13 +96,32 @@ class UserRepository
      */
     public static function isExist(string $sUsername): bool
     {
-        global $oPdo;
+        $oPdo = DbManager::getInstance();
 
-        $sQuery = 'SELECT COUNT(*) AS nb FROM user WHERE username = "' . $sUsername . '"';
-        $oPdoStatement = $oPdo->query($sQuery);
+        $sQuery = 'SELECT COUNT(*) AS nb FROM user WHERE username = :username';
+        $oPdoStatement = $oPdo->prepare($sQuery);
+        $oPdoStatement->bindValue(':username', $sUsername, \PDO::PARAM_STR);
+        $oPdoStatement->execute();
 
-        $aBdInfo = $oPdoStatement->fetch();
+        $oBdInfo = $oPdoStatement->fetch();
 
-        return $aBdInfo['nb'] > 0;
+        return $oBdInfo['nb'] > 0;
     }
+
+//    public static function updateUser(): bool
+//    {
+//        $oUser = $_SESSION['user'];
+//        $oUser->setId($oPdoCat['id']);
+//        $oUser->setId();
+//
+//        global $oPdo;
+//
+//        $sQuery = 'UPDATE user FROM ';
+//    }
+
+//    public static function resetPassword(): bool
+//    {
+//
+//    }
+
 }

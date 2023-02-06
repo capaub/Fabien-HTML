@@ -12,17 +12,19 @@ $aCats = CategoryRepository::findAll();
             <legend class="text-center text-white">Votre article</legend>
             <div class="row">
                 <label class="col-8 offset-2 text-white" for="field_article_subject">Titre</label>
-                <input class="col-8 offset-2" type="text" name="field_article_subject" id="field_article_subject" required>
+                <input class="col-8 offset-2" type="text" name="field_article_subject" id="field_article_subject"
+                       required>
             </div>
             <div class="row">
                 <label class="col-8 offset-2 text-white" for="field_article_content">Votre article</label>
-                <textarea class="col-8 offset-2" name="field_article_content" id="field_article_content" cols="30" rows="10" required></textarea>
+                <textarea class="col-8 offset-2" name="field_article_content" id="field_article_content" cols="30"
+                          rows="10" required></textarea>
             </div>
             <div class="row">
-                <label  class="col-8 offset-2 text-white" for="field_article_category">Catégories</label>
+                <label class="col-8 offset-2 text-white" for="field_article_category">Catégories</label>
                 <select class="col-5 offset-2" id="field_article_category" name="field_article_category">
-                    <?php foreach($aCats as $oCat) : ?>
-                        <option value="<?php echo $oCat->getName() ?>"><?php echo $oCat->getName() ?></option>
+                    <?php foreach ($aCats as $oCat) : ?>
+                        <option value="<?php echo $oCat->getId() ?>"><?php echo $oCat->getName() ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>

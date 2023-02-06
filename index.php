@@ -11,20 +11,6 @@ session_start();
 
 require_once 'lib/config.php';
 require_once 'function.php';
-//require_once 'Model/Article.php';
-//require_once 'Model/Category.php';
-//require_once 'Model/User.php';
-//require_once 'Repository/UserRepository.php';
-//require_once 'Repository/ArticleRepository.php';
-//require_once 'Repository/CategoryRepository.php';
-
-$sDSN = 'mysql:dbname=blog;host=localhost;charset=UTF8';
-$aOptions = [
-    \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES UTF8',
-];
-$oPdo = new \PDO($sDSN, 'root', '', $aOptions);
-$oPdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_WARNING);
-$oPdoStatement = $oPdo->query('SELECT * FROM user');
 
 use Blog\Model\Article;
 use Blog\Model\User;
@@ -90,7 +76,7 @@ if (isset(
         $sCountry,
     );
     if (!UserRepository::isExist($sUsername)) {
-        $oUser = new User($sUsername, $sEmail, new DateTime($dBirthDate), hashPassword($sPassword));
+        $oUser = new User($sUsername, $sEmail, new \DateTime($dBirthDate), hashPassword($sPassword));
         UserRepository::save($oUser);
         $_SESSION['user'] = $oUser;
         $_SESSION['flashes'][] = ['SUCCESS' => 'user created'];
@@ -101,55 +87,31 @@ if (isset(
     $_SESSION['flashes'][] = ['ERREUR' => 'utilisateur existant'];
 }
 
-//if (isset(
-//    $_POST["field_article_subject"],
-//    $_POST["field_article_content"],
-//    $_POST["field_article_category"],
-//    $_SESSION['user']) && $_SESSION['user'] instanceof User
-//) {
-//
-//    $sTitle = strip_tags($_POST["field_article_subject"]);
-//    $sContent = strip_tags($_POST["field_article_content"]);
-//    $sCategory = strip_tags($_POST["field_article_category"]);
-//
-//    $oCategory = new Category($sCategory);
-//
-//    $oArticle = new Article($sTitle, $sContent, $oCategory);
-//
-//    ArticleRepository::save($oArticle);
-//
-//    $_SESSION['flashes'][] = ['SUCCESS' => 'Article soumis'];
-//
-//    header('Location: index.php?page=user');
-//
-//    $_SESSION['flashes'][] = ['ERREUR' => 'Probleme d\'enregistrement'];
-//
-//    exit;
-//}
+if (isset(
+        $_POST["field_article_subject"],
+        $_POST["field_article_content"],
+        $_POST["field_article_category"],
+        $_SESSION['user']) && $_SESSION['user'] instanceof User
+) {
 
-//if (isset($_POST["field_article_subject"], $_POST["field_article_content"], $_POST["field_article_type"])) {
-//
-//    foreach ($aCats as $oCat) {
-//        if ($_POST["field_article_type"] === $oCat->getName()) {
-//            $oArticle = new Article($_POST["field_article_subject"], $_POST["field_article_content"], $oCat);
-//            ArticleRepository::save($oArticle);
-//            break;
-//        }
-//    }
-//}
+    $sTitle = strip_tags($_POST["field_article_subject"]);
+    $sContent = strip_tags($_POST["field_article_content"]);
+    $sCategory = strip_tags($_POST["field_article_category"]);
 
-//$aFlashMessages = [];
+    $oCategory = CategoryRepository::find($sCategory);
 
-//$aCategory = CategoryRepository::findAll();
+    $oArticle = new Article($sTitle, $sContent, $oCategory);
 
-//print_r($aFlashMessages);
+    ArticleRepository::save($oArticle);
 
-//UserRepository::isExist($sUsername);
-//UserRepository::find($sUsername);
-//UserRepository::findAll();
-//UserRepository::save($oUser);
+    $_SESSION['flashes'][] = ['SUCCESS' => 'Article soumis'];
 
+    header('Location: index.php?page=user');
 
+    $_SESSION['flashes'][] = ['ERREUR' => 'Probleme d\'enregistrement'];
+
+    exit;
+}
 //echo '<pre>';
 // print_r($_SESSION);  // Utiliser les info des sessions utilisateur
 // print_r($_GET);       // Données contenues dans l'url
@@ -157,6 +119,10 @@ if (isset(
 // print_r($_SERVER);    // Données "serveur" créées par php
 // print_r($_COOKIE);    // Données cookies fournies par le navigateur
 //echo '</pre>';
+
+//if (isset($_POST['field_user_update'], $_SESSION['user']) && $_SESSION['user'] instanceof User){
+//
+//}
 
 ?>
 
@@ -173,17 +139,6 @@ if (isset(
 <?php
 
 include 'views/header.php';
-
-//foreach ($_SESSION['flashes'] as $iIds => $aMessages){
-//    foreach ($aMessages as $sType => $sMessage){
-//        echo '<div class="alert alert-'.$sType.'">'.$sMessage.'</div>';
-//    }
-//}
-
-//$_SESSION['flashes'] = [];
-
-
-//print_r($_SESSION['user']->getRole());
 
 $sPage = $_GET['page'] ?? PAGE_HOME;
 $sFilename = 'views/' . $sPage . '.php';

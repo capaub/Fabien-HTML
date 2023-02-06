@@ -2,30 +2,56 @@
 
 namespace Blog\Repository;
 
+use Blog\Manager\DbManager;
 use Blog\Model\Category;
 
 class CategoryRepository
 {
+    /**
+     * @return array
+     */
     public static function findAll(): array
     {
-        global $oPdo;
+        $oPdo = DbManager::getInstance();
 
-        $aCats =[];
+        $aCats = [];
 
-        $oPdoCats = $oPdo->query('SELECT * FROM category');
+        $sQuery = 'SELECT * FROM `category`';
 
-        while ($oPdoCat = $oPdoCats->fetch()){
+        $oPdoCats = $oPdo->query($sQuery);
+
+
+        while ($oPdoCat = $oPdoCats->fetch()) {
             $oCat = new Category($oPdoCat['name']);
+            $oCat->setId($oPdoCat['id']);
             $aCats [] = $oCat;
         }
 
         return $aCats;
+    }
 
-//        $oCat1 = new Category("Auto/Moto");
-//        $oCat2 = new Category("Higth-Tech");
-//        $oCat3 = new Category("Santé");
-//
-//        return [$oCat1, $oCat2, $oCat3,];
+    /**
+     * @param int $iId
+     * @return Category|null
+     */
+    public static function find(int $iId): ?Category
+    {
+        $oPdo = DbManager::getInstance();
 
+        $sQuery = 'SELECT * FROM `category` WHERE `id` = :id';
+
+        $oBdCategory = $oPdo->prepare($sQuery);
+        $oBdCategory->bindValue(':id', $iId, \PDO::PARAM_INT);
+        $oBdCategory->execute();
+
+        $aBdCategory = $oBdCategory->fetch();
+        if ($aBdCategory) {
+            $oCat = new Category($aBdCategory['name']);
+            $oCat->setId($aBdCategory['id']);
+
+            return $oCat;
+        }
+
+        return null;
     }
 }

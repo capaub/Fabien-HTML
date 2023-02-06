@@ -5,8 +5,6 @@ namespace Blog\Model;
 use Blog\Model\Category;
 use DateTime;
 
-require 'Category.php';
-
 class Article
 {
     /** @var int */
@@ -32,6 +30,8 @@ class Article
     private int $status;
     /** @var Category */
     private DateTime $createdAt;
+    /** @var int */
+    private int $id;
 
     /**
      * @param string $sTitle
@@ -139,4 +139,23 @@ class Article
         $this->createdAt = $createdAt;
         return $this;
     }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return Article
+     */
+    public function setId(int $id): Article
+    {
+        $this->id = $id;
+        return $this;
+    }
+
 }

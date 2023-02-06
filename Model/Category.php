@@ -6,6 +6,8 @@ class Category
 {
     /** @var string */
     public string $name;
+    /** @var int */
+    public int $id;
 
     /**
      * @param string $sName
@@ -13,7 +15,6 @@ class Category
     public function __construct(string $sName)
     {
         $this->name = $sName;
-        return self::getName();
     }
 
     /**
@@ -33,4 +34,23 @@ class Category
         $this->name = $name;
         return $this;
     }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return Category
+     */
+    public function setId(int $id): Category
+    {
+        $this->id = $id;
+        return $this;
+    }
+
 }
