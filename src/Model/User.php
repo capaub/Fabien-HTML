@@ -2,7 +2,6 @@
 
 namespace Blog\Model;
 
-use Blog\Model\Address;
 use DateTime;
 
 class User
@@ -52,6 +51,7 @@ class User
     public function __construct(string $userName, string $sEmail, DateTime $dBirthAt, string $sPassword)
     {
         $this->userName = $userName;
+//        $this->address = $oAddress;   ,Address $oAddress
         $this->email = $sEmail;
         $this->birthAt = $dBirthAt;
         $this->password = $sPassword;

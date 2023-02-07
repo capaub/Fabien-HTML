@@ -2,7 +2,6 @@
 
 namespace Blog\Model;
 
-use Blog\Model\Category;
 use DateTime;
 
 class Article

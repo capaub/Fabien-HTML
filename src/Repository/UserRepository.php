@@ -83,6 +83,7 @@ class UserRepository
                 $oUser->setConnectedAt(new \DateTime($oBdUser['connectedAt']));
                 $oUser->setCreatedAt(new \DateTime($oBdUser['createdAt']));
                 $oUser->setRole($oBdUser['role']);
+                $oUser->setId($oBdUser['id']);
 
                 return $oUser;
             }
