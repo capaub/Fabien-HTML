@@ -30,8 +30,8 @@ class ArticleController extends AbstractController
 
             $_SESSION['flashes'][] = ['SUCCESS' => 'Article soumis'];
 
-            return $this->redirectAndDie('?page=' . PAGE_ADMIN);
+            $this->redirectAndDie('?page=' . PAGE_ADMIN);
         }
-        return $this->redirectAndDie('?page=' . PAGE_HOME);
+        return $this->render('home.php');
     }
 }

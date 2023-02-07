@@ -28,7 +28,9 @@ class UserController extends AbstractController
                 $_SESSION['flashes'][] = ['danger' => 'Identifiants invalides'];
             }
         }
-        return $this->render('login.php');
+        return $this->render('login.php', [
+            'seo_tilte' => 'Accueil'
+        ]);
     }
 
     /**
@@ -85,46 +87,7 @@ class UserController extends AbstractController
         }
         return $this->render('register.php');
     }
-
-
-    public function account(): string
-    {
-        if (isset(
-            $_POST["field_signup_username"],
-            $_POST["field_signup_email"],
-            $_POST["field_signup_birthdate"],
-            $_POST["field_signup_password"],
-            $_POST["field_signup_street"],
-            $_POST["field_signup_postalCode"],
-            $_POST["field_signup_city"],
-            $_POST["field_signup_country"],
-        )) {
-            $sUsername = strip_tags($_POST["field_signup_username"]);
-            $sEmail = strip_tags($_POST["field_signup_email"]);
-            $dBirthDate = strip_tags($_POST["field_signup_birthdate"]);
-            $sPassword = strip_tags($_POST["field_signup_password"]);
-            $sStreet = strip_tags($_POST["field_signup_street"]);
-            $sPostalCode = strip_tags($_POST["field_signup_postalCode"]);
-            $sCity = strip_tags($_POST["field_signup_city"]);
-            $sCountry = strip_tags($_POST["field_signup_country"]);
-
-//            $oAddress = new Address(
-//                $sStreet,
-//                $sPostalCode,
-//                $sCity,
-//                $sCountry,
-//            );
-
-            if (!UserRepository::isExist($sUsername)) {
-                $oUser = new User($sUsername, $sEmail, new \DateTime($dBirthDate), hashPassword($sPassword));
-                UserRepository::save($oUser);
-                $_SESSION['user'] = $oUser;
-                $_SESSION['flashes'][] = ['SUCCESS' => 'user created'];
-                return $this->redirectAndDie('?page=' . PAGE_MY_ACCOUNT);
-            } else {
-                return $this->redirectAndDie('?page=' . PAGE_REGISTER);
-            }
-        }
-        return $this->render('register.php');
-    }
 }
+
+//    public function account(): string
+//    {}
