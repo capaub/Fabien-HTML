@@ -12,7 +12,7 @@
 
 include 'header.php';
 
-if (file_exists('view/' . $sView)) {
+if (file_exists('views/' . $sView)) {
     include $sView;
 }
 

@@ -24,7 +24,7 @@ const SAVE_DIR = "data";
 
 const ROUTING = [
     PAGE_HOME => '\Blog\Controller\DefaultController::home',
-    PAGE_LOGOUT => '\Blog\Controller\DefaultController::logout',
+    PAGE_LOGOUT => '\Blog\Controller\UserController::logout',
     PAGE_CONTACT => '\Blog\Controller\DefaultController::contact',
     PAGE_ADMIN => '\Blog\Controller\AdminController::admin',
     PAGE_NEW_ARTICLE => '\Blog\Controller\ArticleController::created',
