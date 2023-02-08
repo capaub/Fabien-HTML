@@ -18,6 +18,7 @@ $oDebugbar["messages"]->addMessage('hello world!');
     <meta charset="UTF-8">
     <title><?= $seo_title ?? '' ?> - Mon site</title>
     <meta name="description" content="super blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/css/bootstrap.min.css">
     <?php echo $oDebugbarRenderer->renderHead() ?>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>

@@ -1,24 +1,23 @@
 <main>
-    <h1>Formulaire de contact</h1>
+    <h1 class="text-center text-white my-2 px-2">Formulaire de contact</h1>
 
     <form action="?page=<?= PAGE_CONTACT; ?>" method="POST">
-        <div>
-            <label for="subject">Titre</label>
-            <input required type="text" id="subject" name="field_subject" placeholder="Saississez le titre de votre message" />
+        <div class="rounded-2 border-1 border-dark">
+            <label class="col-8 offset-2 text-white my-2 px-2" for="subject">Titre</label>
+            <input class="col-8 offset-2 bg-secondary"  required type="text" id="subject" name="field_subject" placeholder="Saississez le titre de votre message" />
         </div>
         <div>
-            <label for="content">Message</label>
-            <textarea required type="text" id="content" name="field_content" placeholder="Contenue de votre message"></textarea>
+            <label class="col-8 offset-2 text-white my-2 px-2" for="content">Message</label>
+            <textarea class="col-8 offset-2 bg-secondary"  required type="text" id="content" name="field_content" placeholder="Contenue de votre message"></textarea>
         </div>
         <div>
-            <label for="options">Options de message</label>
-            <select>
+            <label class="col-8 offset-2 text-white my-2 px-2" for="options">Options de message</label>
+            <select class="col-8 offset-2 bg-secondary" >
                 <option value="urgent">Prioritaire</option>
                 <option value="attachement">Avec pièce-jointe</option>
             </select>
         </div>
-        <button name="form_contact" value="contact">Envoyer</button>
-        <input type="hidden" name="page" value="contact" />
+        <button class="col-2 offset-8 my-2 px-2" name="form_contact" value="contact">Envoyer</button>
     </form>
 </main>
 

@@ -9,24 +9,24 @@ if (!isset($_SESSION['user']) || !$_SESSION['user'] instanceof User) {
 
 ?>
 
-<main>
-    <h1>Mon compte</h1>
-    <em class="text-sm">Compte créé le <?= $_SESSION['user']->getCreatedAt()->format('d/m/Y H:i') ?></em>
+<main class="container">
+    <h1 class="text-white text-center">Mon compte</h1>
+    <em class="text-white text-center">Compte créé le <?= $_SESSION['user']->getCreatedAt()->format('d/m/Y H:i') ?></em>
 
     <div>
-        <strong>Mes données</strong>
-        <table>
-            <tr>
-                <td>Nom d'utilisateur</td>
-                <td><?= $_SESSION['user']->getUserName(); ?></td>
+        <strong class="text-white text-center">Mes données</strong>
+        <table class="row">
+            <tr class="col-4">
+                <td class="text-white text-center">Nom d'utilisateur</td>
+                <td class="text-white text-center"><?= $_SESSION['user']->getUserName(); ?></td>
             </tr>
-            <tr>
-                <td>Email</td>
-                <td><?= $_SESSION['user']->getEmail(); ?></td>
+            <tr class="col-4">
+                <td class="text-white text-center">Email</td>
+                <td class="text-white text-center"><?= $_SESSION['user']->getEmail(); ?></td>
             </tr>
-            <tr>
-                <td>Rôle</td>
-                <td><?= User::ROLE_CONF[$_SESSION['user']->getRole()]['label']; ?></td>
+            <tr class="col-4">
+                <td class="col-12 text-white text-center">Rôle</td>
+                <td class="col-12 text-white text-center"><?= User::ROLE_CONF[$_SESSION['user']->getRole()]['label']; ?></td>
             </tr>
         </table>
     </div>

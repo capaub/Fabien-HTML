@@ -1,19 +1,21 @@
-<main>
-    <h1>Formulaire d'inscription</h1>
-    <form action="?page=<?=PAGE_SIGNUP; ?>" method="POST">
-        <div>
-            <label for="username">Pseudo</label>
-            <input required type="text" id="username" name="field_username">
+<main class="container">
+    <h1 class="text-white text-center">Formulaire d'inscription</h1>
+    <form class="row" action="?page=<?=PAGE_SIGNUP; ?>" method="POST">
+        <div class="row">
+            <label class="col-8 offset-2 text-white my-2 px-2" for="username">Pseudo</label>
+            <input class="col-8 offset-2 bg-secondary" required type="text" id="username" name="field_username">
         </div>
-        <div>
-            <label for="email">Email</label>
-            <input required type="email" id="email" name="field_email">
+        <div class="row">
+            <label class="col-8 offset-2 text-white my-2 px-2" for="email">Email</label>
+            <input class="col-8 offset-2 bg-secondary" required type="email" id="email" name="field_email">
         </div>
-        <div>
-            <label for="password">Mot de passe</label>
-            <input required type="password" id="password" name="field_password">
+        <div class="row">
+            <label class="col-8 offset-2 text-white my-2 px-2" for="password">Mot de passe</label>
+            <input class="col-8 offset-2 bg-secondary" required type="password" id="password" name="field_password">
         </div>
-        <button name="form_signup" value="signup">Envoyer</button>
+        <div class="row">
+        <button class="col-3 offset-2 bg-secondary text-white my-3 px-0" name="form_signup" value="signup">Envoyer</button>
+        </div>
     </form>
 </main>
 
