@@ -1,0 +1,17 @@
+{
+  "name": "greta/blog",
+  "license": "proprietary",
+  "type": "project",
+  "require": {
+    "ext-pdo": "*",
+    "maximebf/debugbar": "^1.18",
+    "tecnickcom/tcpdf": "^6.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "Blog\\": "src/"
+    }
+  },
+  "autoload-dev": {
+  }
+}

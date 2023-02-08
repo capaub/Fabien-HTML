@@ -1,23 +1,18 @@
 <?php
 
-spl_autoload_register(static function (string $sClass) {
-    $sFilepath = str_replace(['\\', 'Blog/'], ['/', 'src/'], $sClass) . '.php';
-    if (file_exists($sFilepath)) {
-        require_once $sFilepath;
-    }
-});
+//spl_autoload_register(static function (string $sClass) {
+//    $sFilepath = str_replace(['\\', 'Blog/'], ['/', 'src/'], $sClass) . '.php';
+//    if (file_exists($sFilepath)) {
+//        require_once $sFilepath;
+//    }
+//});
+
+require 'vendor/autoload.php';
 
 session_start();
 
 require_once 'lib/config.php';
 require_once 'function.php';
-
-
-//foreach ($aRouting as $key => $values):
-//{
-//    [$sClass, $sFunction] = explode('::', $aRouting[$key]);
-//    echo (new $sClass())->$sFunction();
-//}
 
 if (!isset($_SESSION['id'])) {
     $_SESSION['id'] = uniqid("", false);
@@ -39,3 +34,4 @@ echo (new $sClass())->$sFunction();
 // print_r($_SERVER);    // Données "serveur" créées par php
 // print_r($_COOKIE);    // Données cookies fournies par le navigateur
 //echo '</pre>';
+

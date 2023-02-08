@@ -2,10 +2,18 @@
 
 namespace Blog\Controller;
 
-use JetBrains\PhpStorm\NoReturn;
-
 abstract class AbstractController
 {
+    /**
+     * @param string $sUrl
+     * @return void
+     */
+    protected function redirectAndDie(string $sUrl): void
+    {
+        header('Location: ' . $sUrl);
+        die;
+    }
+
     /**
      * @param string $sView
      * @param array $aParams
@@ -17,15 +25,5 @@ abstract class AbstractController
         ob_start();
         include __DIR__ . '/../../views/base.php';
         return ob_get_clean();
-    }
-
-    /**
-     * @param string $sUrl
-     * @return void
-     */
-    protected function redirectAndDie(string $sUrl): void
-    {
-        header('location: ' . $sUrl);
-        die;
     }
 }

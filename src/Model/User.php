@@ -37,9 +37,9 @@ class User
 
     public const ROLE_CONF =
         [
-            self::ROLE_ADMIN => ['name' => 'Admin'],
-            self::ROLE_MANAGER => ['name' => 'Manager'],
-            self::ROLE_USER => ['name' => 'User'],
+            self::ROLE_ADMIN => ['label' => 'Admin'],
+            self::ROLE_MANAGER => ['label' => 'Manager'],
+            self::ROLE_USER => ['label' => 'User'],
         ];
 
     /**

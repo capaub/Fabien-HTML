@@ -21,7 +21,7 @@ class CategoryRepository
         $oPdoCats = $oPdo->query($sQuery);
 
 
-        while ($oPdoCat = $oPdoCats->fetch()) {
+        while ($oPdoCat = $oPdoCats->fetch( \PDO::FETCH_ASSOC)) {
             $oCat = new Category($oPdoCat['name']);
             $oCat->setId($oPdoCat['id']);
             $aCats [] = $oCat;

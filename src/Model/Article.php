@@ -31,6 +31,10 @@ class Article
     private DateTime $createdAt;
     /** @var int */
     private int $id;
+    /**
+     * @var string|null
+     */
+    private ?string $picture;
 
     /**
      * @param string $sTitle
@@ -156,5 +160,25 @@ class Article
         $this->id = $id;
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    /**
+     * @param string|null $picture
+     * @return Article
+     */
+    public function setPicture(?string $picture): Article
+    {
+        $this->picture = $picture;
+        return $this;
+    }
+
+
 
 }

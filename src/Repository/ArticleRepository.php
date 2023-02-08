@@ -4,7 +4,6 @@ namespace Blog\Repository;
 
 use Blog\Manager\DbManager;
 use Blog\Model\Article;
-use Blog\Model\Category;
 
 class ArticleRepository
 {
@@ -17,14 +16,8 @@ class ArticleRepository
     {
         $oPdo = DbManager::getInstance();
 
-        $sQuery = 'INSERT INTO article (category_id, title, content, status, createdAt)
-        VALUES (
-                :category_id,
-                :title,
-                :content,
-                :status,
-                :createdAt
-                )';
+        $sQuery = 'INSERT INTO article (category_id, title, content, status, createdAt, picture)
+        VALUES (:category_id, :title, :content, :status, :createdAt, :picture)';
 
         $oPdoArt = $oPdo->prepare($sQuery);
 
@@ -33,6 +26,7 @@ class ArticleRepository
         $oPdoArt->bindValue(':content', $oArticle->getContent(), \PDO::PARAM_STR);
         $oPdoArt->bindValue(':status', $oArticle->getStatus(), \PDO::PARAM_INT);
         $oPdoArt->bindValue(':createdAt', $oArticle->getCreatedAt()->format('Y-m-d H:i:s'), \PDO::PARAM_STR);
+        $oPdoArt->bindValue(':picture', $oArticle->getPicture(), \PDO::PARAM_STR);
 
         return $oPdoArt->execute();
     }
@@ -46,13 +40,22 @@ class ArticleRepository
         $oPdo = DbManager::getInstance();
 
         $aArticles = [];
-        $oPdoArticles = $oPdo->query('SELECT * FROM article');
+        $oPdoArticles = $oPdo->query('SELECT * FROM `article` ORDER BY `createdAt` DESC ');
 
-        while ($oPdoArticle = $oPdoArticles->fetch()) {
-            $oPdoCats = $oPdo->query('SELECT name FROM category WHERE id = "' . $oPdoArticle['category_id'] . '"')->fetch();
+        while ($oDbArticle = $oPdoArticles->fetch( \PDO::FETCH_ASSOC)) {
+            $oCategoryArt = CategoryRepository::find($oDbArticle['category_id']);
 
-            $oArticle = new Article($oPdoArticle['title'], $oPdoArticle['content'], new Category($oPdoCats["name"]), $oPdoArticle['status']);
-            $oArticle->setCreatedAt(new \DateTime($oPdoArticle['createdAt']));
+            $oArticle = new Article(
+                $oDbArticle['title'],
+                $oDbArticle['content'],
+                $oCategoryArt,
+                $oDbArticle['status']
+            );
+
+            $oArticle->setCreatedAt(new \DateTime($oDbArticle['createdAt']));
+            $oArticle->setId($oDbArticle['id']);
+            $oArticle->setPicture($oDbArticle['picture']);
+            $oArticle->setStatus($oDbArticle['status']);
 
             $aArticles[] = $oArticle;
         }
@@ -68,7 +71,9 @@ class ArticleRepository
     {
         $oPdo = DbManager::getInstance();
 
-        $oPdoArticle = $oPdo->query('SELECT * FROM article WHERE id = :id');
+        $sQuery = 'SELECT * FROM article WHERE id = :id';
+
+        $oPdoArticle = $oPdo->prepare($sQuery);
         $oPdoArticle->bindValue(':id', $iId, \PDO::PARAM_INT);
         $oPdoArticle->execute();
 
@@ -76,16 +81,28 @@ class ArticleRepository
 
         if ($oBdArticle) {
 
-            $oArticle = new Article(
-                $oBdArticle['title'],
-                $oBdArticle['content'],
-                CategoryRepository::find($oBdArticle['category_id']),
-                $oBdArticle['status']);
-
-            $oArticle->setCreatedAt(new \DateTime($oBdArticle['createdAt']));
+            $oArticle = static::hydrate($oBdArticle);
 
             return $oArticle;
         }
         return NULL;
     }
+    private static function hydrate($oBdArticle):Article
+    {
+        $oCategoryArt = CategoryRepository::find($oBdArticle['category_id']);
+
+        $oArticle = new Article(
+            $oBdArticle['title'],
+            $oBdArticle['content'],
+            $oCategoryArt
+        );
+
+            $oArticle->setCreatedAt(new \DateTime($oBdArticle['createdAt']));
+            $oArticle->setId($oBdArticle['id']);
+            $oArticle->setPicture($oBdArticle['picture']);
+            $oArticle->setStatus($oBdArticle['status']);
+
+            return $oArticle;
+    }
+
 }

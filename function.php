@@ -23,7 +23,7 @@ function sendMail(string $sMail, string $sSubject, string $sContent): bool
  * @param $sPassword
  * @return string
  */
-function hashPassword($sPassword): string
+function hashUserPassword($sPassword): string
 {
     return password_hash($sPassword, PASSWORD_BCRYPT);
 }
@@ -36,9 +36,9 @@ function hashPassword($sPassword): string
  */
 function authUser(string $sUsername, string $sPassword): ?User
 {
-    $oUser = UserRepository::find($sUsername);
+    $oUser = UserRepository::findByUsername($sUsername);
     print_r($oUser);
-    if ($oUser && password_verify($sPassword, $oUser->getPassword())) {
+    if ($oUser instanceof User && password_verify($sPassword, $oUser->getPassword())) {
         return $oUser;
     }
     return NULL;

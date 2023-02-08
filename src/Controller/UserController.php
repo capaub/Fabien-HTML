@@ -2,7 +2,6 @@
 
 namespace Blog\Controller;
 
-use Blog\Model\Address;
 use Blog\Model\User;
 use Blog\Repository\UserRepository;
 
@@ -12,25 +11,23 @@ class UserController extends AbstractController
      * @return string
      * @throws \Exception
      */
-    public function login(): string
+    public function login():string
     {
-        if (isset($_POST["field_login_username"], $_POST["field_login_password"])) {
-            $sUsername = strip_tags($_POST["field_login_username"]);
-            $sPassword = strip_tags($_POST["field_login_password"]);
+        if (isset($_POST["form_login"], $_POST["field_username"], $_POST["field_password"])) {
+            $sCleanUsername = strip_tags($_POST["field_username"]);
+            $sCleanPassword = strip_tags($_POST["field_password"]);
 
-            $oUser = authUser($sUsername, $sPassword);
+            $oUser = authUser($sCleanUsername, $sCleanPassword);
             if ($oUser instanceof User) {
                 $_SESSION['user'] = $oUser;
-                echo 'authentificiation réussit';
+
                 $_SESSION['flashes'][] = ['success' => 'Bienvenue' . $oUser->getUserName()];
-                $this->redirectAndDie('?page=' . PAGE_HOME);
+                $this->redirectAndDie('?page=' . PAGE_MY_ACCOUNT);
             } else {
                 $_SESSION['flashes'][] = ['danger' => 'Identifiants invalides'];
             }
         }
-        return $this->render('login.php', [
-            'seo_tilte' => 'Accueil'
-        ]);
+        return $this->render('login.php');
     }
 
     /**
@@ -58,14 +55,14 @@ class UserController extends AbstractController
             $_POST["field_signup_city"],
             $_POST["field_signup_country"],
         )) {
-            $sUsername = strip_tags($_POST["field_signup_username"]);
-            $sEmail = strip_tags($_POST["field_signup_email"]);
-            $dBirthDate = strip_tags($_POST["field_signup_birthdate"]);
-            $sPassword = strip_tags($_POST["field_signup_password"]);
-            $sStreet = strip_tags($_POST["field_signup_street"]);
-            $sPostalCode = strip_tags($_POST["field_signup_postalCode"]);
-            $sCity = strip_tags($_POST["field_signup_city"]);
-            $sCountry = strip_tags($_POST["field_signup_country"]);
+            $sCleanUsername = strip_tags($_POST["field_signup_username"]);
+            $sCleanEmail = strip_tags($_POST["field_signup_email"]);
+            $dCleanBirthDate = strip_tags($_POST["field_signup_birthdate"]);
+            $sCleanPassword = strip_tags($_POST["field_signup_password"]);
+            $sCleanStreet = strip_tags($_POST["field_signup_street"]);
+            $sCleanPostalCode = strip_tags($_POST["field_signup_postalCode"]);
+            $sCleanCity = strip_tags($_POST["field_signup_city"]);
+            $sCleanCountry = strip_tags($_POST["field_signup_country"]);
 
 //            $oAddress = new Address(
 //                $sStreet,
@@ -74,20 +71,28 @@ class UserController extends AbstractController
 //                $sCountry,
 //            );
 
-            if (!UserRepository::isExist($sUsername)) {
-                $oUser = new User($sUsername, $sEmail, new \DateTime($dBirthDate), hashPassword($sPassword));
+            if (!UserRepository::isExist($sCleanUsername)) {
+                $sHashedPassword = hashUserPassword($sCleanPassword);
+                $oUser = new User($sCleanUsername, $sCleanEmail, new \DateTime($dCleanBirthDate), $sHashedPassword);
+
                 UserRepository::save($oUser);
+
                 $_SESSION['user'] = $oUser;
-                $_SESSION['flashes'][] = ['SUCCESS' => 'user created'];
+                $_SESSION['flashes'][] = ['SUCCESS' => 'Bienvenue ' . $oUser->getUserName()];
+
                 $this->redirectAndDie('?page=' . PAGE_MY_ACCOUNT);
             } else {
-                $_SESSION['flashes'][] = ['ERREUR' => 'utilisateur existant'];
-                $this->redirectAndDie('?page=' . PAGE_MY_ACCOUNT);
+                $_SESSION['flashes'][] = ['ERREUR' => 'Compte déjà existant'];
             }
         }
-        return $this->render('register.php');
+        return $this->render('signup.php');
+    }
+
+    /**
+     * @return string
+     */
+    public function account(): string
+    {
+            return $this->render('my-account.php');
     }
 }
-
-//    public function account(): string
-//    {}
