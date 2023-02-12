@@ -1,12 +1,12 @@
 <main>
     <h1 class="text-white text-center">Espace admin</h1>
-    <fieldest class="container">
+    <fieldest class="">
         <legend class="text-white text-center">Créer un article</legend>
 
-        <form method="POST" enctype="multipart/form-data">
-            <div>
-                <label class="offset-3 text-white text-center" for="category">Catégorie</label>
-                <select class="text-bg-secondary" name="field_category" id="category">
+        <form class="container" method="POST" enctype="multipart/form-data">
+            <div class="row">
+                <label class="col-3 offset-3 text-white text-start" for="field_category">Catégorie</label>
+                <select class="col-3 text-bg-secondary" name="field_category" id="field_category">
                     <?php
                     foreach($categories as $oCategory) {
                         echo '<option class="text-center" value="' . $oCategory->getId() . '">' .$oCategory->getName().'</option>';
@@ -14,22 +14,22 @@
                     ?>
                 </select>
             </div>
-            <div>
-                <label  class="offset-3 text-white text-center" for="picture">Photo d'illustration</label>
-                <input id="picture" name="field_picture" type="file"/>
+            <div class="row">
+                <label class="col-2 align-items-around offset-3 text-start text-white" for="file_picture">Photo d'illustration</label>
+                <input class="col-4 align-items-around text-white" id="file_picture" name="file_picture" type="file"/>
             </div>
-            <div>
-                <label class="offset-3 text-white text-center" for="title">Titre</label>
-                <input id="title" name="field_title" type="text"/>
+            <div class="row">
+                <label class="col-3 offset-3 text-white text-strat" for="field_subject">Titre</label>
+                <input class="col-3" id="field_subject" name="field_subject" type="text"/>
             </div>
-            <div>
-                <label class="offset-3 text-white text-center" for="content">Message</label>
-                <textarea id="content" name="field_content" ></textarea>
+            <div class="col-7 offset-3">
+                <label class="text-white text-center" for="field_content">Message</label>
+                <textarea id="field_content" name="field_content" ></textarea>
             </div>
-            <button class="offset-3 text-center" name="form_new_article" value="nex_article">Envoyer</button>
+            <button class="col-3 offset-7 text-center" name="form_new_article" value="new_article">Envoyer</button>
         </form>
     </fieldest>
-        <h2 class="offset-3 text-white text-start">Mes utilisateurs</h2>
+        <h2 class="text-white text-center">Mes utilisateurs</h2>
         <table class="container">
             <thead>
             <tr>

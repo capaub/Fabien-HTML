@@ -20,7 +20,7 @@ $oDebugbar["messages"]->addMessage('hello world!');
     <meta name="description" content="super blog">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/css/bootstrap.min.css">
-    <?php echo $oDebugbarRenderer->renderHead() ?>
+    <?= $oDebugbarRenderer->renderHead() ?>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 </head>
 <body class="bg-dark">
@@ -42,7 +42,7 @@ if (file_exists('views/' . $sView)) {
 
 include 'footer.php';
 ?>
-<?php echo $oDebugbarRenderer->render() ?>
+<?= $oDebugbarRenderer->render() ?>
 <script src="js/js/bootstrap.min.js"></script>
 </body>
 </html>

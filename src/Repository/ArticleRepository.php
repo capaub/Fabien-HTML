@@ -77,7 +77,7 @@ class ArticleRepository
         $oPdoArticle->bindValue(':id', $iId, \PDO::PARAM_INT);
         $oPdoArticle->execute();
 
-        $oBdArticle = $oPdoArticle->fetch();
+        $oBdArticle = $oPdoArticle->fetch(\PDO::FETCH_ASSOC);
 
         if ($oBdArticle) {
 
@@ -87,7 +87,13 @@ class ArticleRepository
         }
         return NULL;
     }
-    private static function hydrate($oBdArticle):Article
+
+    /**
+     * @param $oBdArticle
+     * @return Article|null
+     * @throws \Exception
+     */
+    private static function hydrate($oBdArticle): ?Article
     {
         $oCategoryArt = CategoryRepository::find($oBdArticle['category_id']);
 

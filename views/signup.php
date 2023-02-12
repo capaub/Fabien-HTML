@@ -14,6 +14,10 @@
             <input class="col-8 offset-2 bg-secondary" required type="password" id="password" name="field_password">
         </div>
         <div class="row">
+            <label class="col-8 offset-2 text-white my-2 px-2" for="birthAt">Date de naissance</label>
+            <input class="col-8 offset-2 bg-secondary" required type="date" id="birthAt" name="field_birthAt">
+        </div>
+        <div class="row">
         <button class="col-3 offset-2 bg-secondary text-white my-3 px-0" name="form_signup" value="signup">Envoyer</button>
         </div>
     </form>

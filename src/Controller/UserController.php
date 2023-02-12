@@ -46,23 +46,23 @@ class UserController extends AbstractController
     public function register(): string
     {
         if (isset(
-            $_POST["field_signup_username"],
-            $_POST["field_signup_email"],
-            $_POST["field_signup_birthdate"],
-            $_POST["field_signup_password"],
-            $_POST["field_signup_street"],
-            $_POST["field_signup_postalCode"],
-            $_POST["field_signup_city"],
-            $_POST["field_signup_country"],
+            $_POST["field_username"],
+            $_POST["field_email"],
+            $_POST["field_birthAt"],
+            $_POST["field_password"],
+//            $_POST["field_signup_street"],
+//            $_POST["field_signup_postalCode"],
+//            $_POST["field_signup_city"],
+//            $_POST["field_signup_country"],
         )) {
-            $sCleanUsername = strip_tags($_POST["field_signup_username"]);
-            $sCleanEmail = strip_tags($_POST["field_signup_email"]);
-            $dCleanBirthDate = strip_tags($_POST["field_signup_birthdate"]);
-            $sCleanPassword = strip_tags($_POST["field_signup_password"]);
-            $sCleanStreet = strip_tags($_POST["field_signup_street"]);
-            $sCleanPostalCode = strip_tags($_POST["field_signup_postalCode"]);
-            $sCleanCity = strip_tags($_POST["field_signup_city"]);
-            $sCleanCountry = strip_tags($_POST["field_signup_country"]);
+            $sCleanUsername = strip_tags($_POST["field_username"]);
+            $sCleanEmail = strip_tags($_POST["field_email"]);
+            $dCleanBirthDate = strip_tags($_POST["field_birthAt"]);
+            $sCleanPassword = strip_tags($_POST["field_password"]);
+//            $sCleanStreet = strip_tags($_POST["field_signup_street"]);
+//            $sCleanPostalCode = strip_tags($_POST["field_signup_postalCode"]);
+//            $sCleanCity = strip_tags($_POST["field_signup_city"]);
+//            $sCleanCountry = strip_tags($_POST["field_signup_country"]);
 
 //            $oAddress = new Address(
 //                $sStreet,
@@ -78,7 +78,7 @@ class UserController extends AbstractController
                 UserRepository::save($oUser);
 
                 $_SESSION['user'] = $oUser;
-                $_SESSION['flashes'][] = ['SUCCESS' => 'Bienvenue ' . $oUser->getUserName()];
+                $_SESSION['flashes'][] = ['SUCCESS' => 'Bienvenu ' . $oUser->getUserName()];
 
                 $this->redirectAndDie('?page=' . PAGE_MY_ACCOUNT);
             } else {

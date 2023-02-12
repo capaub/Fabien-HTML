@@ -1,20 +1,17 @@
 <main>
     <h1>Mon blog</h1>
-    <?php
-    foreach ($articles as $oArticle) {
-        echo '<div>';
-            echo '<div class="container flex-wrap">';
-                echo '<div class="row">';
-                    echo '<a href="?=page'.PAGE_ARTICLE.'&article='.$oArticle->getId().'" title="Accéder à l\'article complet">';
-                    echo    '<h2 class="col-5 text-white">'.$oArticle->getTitle().'</h2>';
-                    echo '</a>';
-                    echo '<strong class="col-3 text-white">Catégorie : '.$oArticle->getCategory()->getName().'</strong>';
-                    echo '<em class="text-white col-3 ">Créer le : '.$oArticle->getCreatedAt()->format('d/m/Y').'</em>';
-                    echo '</div>';
-            echo '</div>';
-        echo '</div>';
-    }
-    ?>
+    <div class="container flex-wrap">
+        <div class="row">
+            <?php
+            foreach ($articles as $oArticle) { ?>
+                <a href="?page=<?= PAGE_ARTICLE.'&article='.$oArticle->getId() ?>" title="Accéder à l'article complet" >
+                    <h2 class="col-3 text-white"><?= $oArticle->getTitle()?></h2>
+                </a>
+                <strong class="col-3 text-white">Catégorie : <?= $oArticle->getCategory()->getName()?></strong>
+                <em class="text-white col-3 ">Créer le : <?= $oArticle->getCreatedAt()->format('d/m/Y') ?></em>
+            <?php } ?>
+        </div>
+    </div>
 </main>
 
 <!--<main class="container">-->

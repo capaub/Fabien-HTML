@@ -1,12 +1,16 @@
-<h1><?= $article->getTitle(); ?></h1>
-<strong><?= $article->getCategory()->getName(); ?></strong><br />
-<em><?= $article->getCreatedAt()->format('d/mY'); ?></em>
+<main class="container flex-wrap">
+    <div class="row">
+        <h1 class="text-white"><?= $article->getTitle(); ?></h1>
+        <strong class="text-white"><?= $article->getCategory()->getName(); ?></strong><br />
+        <em class="text-white"><?= $article->getCreatedAt()->format('d/m/Y'); ?></em>
+        <p class="text-white"><?= $article->getContent(); ?></p>
 
-<?php if($article->getPicture()) { ?>
-    <img src="<?= DIR_UPLOADS . DIRECTORY_SEPARATOR . $article->getPicture(); ?>"
-         alt=" Illustration" />
-<?php } ?>
-
+        <?php if($article->getPicture()) { ?>
+            <img src="<?= DIR_UPLOADS . DIRECTORY_SEPARATOR . $article->getPicture(); ?>"
+                 alt=" Illustration" />
+        <?php } ?>
+    </div>
+</main>
 
 <!--<section class="container p-0">-->
 <!---->
